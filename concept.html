@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="What are Shape Memory Alloys? Learn the concept, chemistry, and atomic science behind SMAs and Nitinol." />
+  <title>The Concept — SMA Forge</title>
+
+  <script src="./js/theme.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+
+  <style>
+    /* ── Concept-specific styles ── */
+
+    /* Definition block */
+    .definition-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6) var(--space-8);
+      margin-block: var(--space-8);
+    }
+
+    .definition-block p {
+      font-size: var(--text-lg);
+      line-height: 1.75;
+      color: var(--text-muted);
+      max-width: 72ch;
+    }
+
+    .definition-block strong {
+      color: var(--text);
+    }
+
+    /* Two-column layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-10);
+      align-items: start;
+    }
+
+    .two-col--center { align-items: center; }
+
+    /* Comparison table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+
+    .compare-table th {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 400;
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+      letter-spacing: 0.04em;
+    }
+
+    .compare-table th:first-child { color: var(--text-muted); }
+    .compare-table th:nth-child(2) { color: var(--accent); }
+    .compare-table th:nth-child(3) { color: var(--teal); }
+
+    .compare-table td {
+      padding: var(--space-3) var(--space-4);
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+
+    .compare-table td:first-child {
+      color: var(--text-faint);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .compare-table td strong {
+      color: var(--text);
+      display: block;
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+
+    /* Effect cards */
+    .effect-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      margin-top: var(--space-6);
+    }
+
+    .effect-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .effect-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .effect-card__accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .effect-card--orange .effect-card__accent { background: var(--accent); }
+    .effect-card--teal   .effect-card__accent { background: var(--teal); }
+
+    .effect-card__number {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      line-height: 1;
+      margin-bottom: var(--space-3);
+      opacity: 0.15;
+      position: absolute;
+      top: var(--space-4);
+      right: var(--space-5);
+    }
+
+    .effect-card--orange .effect-card__number { color: var(--accent); }
+    .effect-card--teal   .effect-card__number { color: var(--teal); }
+
+    .effect-card__label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      margin-bottom: var(--space-2);
+    }
+
+    .effect-card--orange .effect-card__label { color: var(--accent); }
+    .effect-card--teal   .effect-card__label { color: var(--teal); }
+
+    .effect-card__title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      margin-bottom: var(--space-3);
+      letter-spacing: 0.03em;
+    }
+
+    .effect-card__desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .effect-card__steps {
+      margin-top: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .effect-step {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+    }
+
+    .effect-step__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .effect-card--orange .effect-step__dot { background: var(--accent); }
+    .effect-card--teal   .effect-step__dot { background: var(--teal); }
+
+    /* Composition visual */
+    .composition-bar {
+      height: 48px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      margin-block: var(--space-4);
+    }
+
+    .composition-bar__ni {
+      background: linear-gradient(90deg, var(--teal), #63b0bc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 400;
+      color: #fff;
+      letter-spacing: 0.05em;
+      transition: flex var(--transition);
+    }
+
+    .composition-bar__ti {
+      background: linear-gradient(90deg, #d45a30, var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 400;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+
+    /* Property stat */
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      margin-top: var(--space-6);
+    }
+
+    .property-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      text-align: center;
+    }
+
+    .property-stat__value {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: var(--space-2);
+      letter-spacing: 0.03em;
+    }
+
+    .property-stat__label {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      line-height: 1.4;
+    }
+
+    /* Info callout */
+    .callout {
+      display: flex;
+      gap: var(--space-4);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+      margin-top: var(--space-6);
+    }
+
+    .callout__icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .callout__text {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .callout__text strong { color: var(--text); }
+
+    /* Section divider with label */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-block: var(--space-12);
+    }
+
+    .section-divider__line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .section-divider__label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+
+    /* Next page CTA */
+    .next-cta {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10) var(--space-12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-8);
+      margin-top: var(--space-16);
+      transition: border-color var(--transition);
+    }
+
+    .next-cta:hover { border-color: var(--border-hover); }
+
+    .next-cta__label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+      margin-bottom: var(--space-2);
+    }
+
+    .next-cta__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+
+    .next-cta__desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      margin-top: var(--space-2);
+      max-width: 45ch;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+      .effect-cards { grid-template-columns: 1fr; }
+      .property-grid { grid-template-columns: 1fr 1fr; }
+      .next-cta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--space-8);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .property-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body class="page-enter">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar__inner">
+      <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+        <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+          <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+        </svg>
+        <span class="navbar__logo-text">SMA <span>Forge</span></span>
+      </a>
+
+      <ul class="navbar__links" role="list">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./concept.html">Concept</a></li>
+        <li><a href="./phases.html">Phases</a></li>
+        <li><a href="./applications.html">Applications</a></li>
+        <li><a href="./history.html">History</a></li>
+        <li><a href="./sdgs.html">SDGs</a></li>
+        <li><a href="./about.html">about</a></li>
+      </ul>
+
+      <div class="navbar__controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode"></button>
+        <button class="navbar__hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="navbar__mobile" id="mobile-menu">
+    <a href="./index.html">Home</a>
+    <a href="./concept.html">Concept</a>
+    <a href="./phases.html">Phases</a>
+    <a href="./applications.html">Applications</a>
+    <a href="./history.html">History</a>
+    <a href="./sdgs.html">SDGs</a>
+    <a href="./about.html">about</a>
+  </div>
+
+  <main id="main">
+
+    <!-- ═══════════════════ PAGE HERO ═══════════════════ -->
+    <section class="page-hero" style="background: radial-gradient(ellipse 70% 50% at 80% 50%, rgba(232,100,58,0.06), transparent);">
+      <div class="container--narrow">
+        <p class="page-hero__label hero-animate-1">01 — Concept</p>
+        <h1 class="page-hero__title hero-animate-2">
+          What Are Shape<br>
+          <span class="gradient-text">Memory Alloys?</span>
+        </h1>
+        <p class="page-hero__subtitle hero-animate-3">
+          Smart metallic materials that can recover their original shape
+          after large deformations — up to 8–10% strain — when exposed
+          to temperature or stress changes. That's 10× greater than
+          ordinary steel's elastic limit.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ DEFINITION ═══════════════════ -->
+    <section class="section">
+      <div class="container--narrow">
+
+        <div class="definition-block" data-reveal>
+          <p>
+            A <strong>Shape Memory Alloy (SMA)</strong> is a metallic alloy that,
+            after being deformed at a low temperature, can return to its
+            pre-deformed shape when heated above a critical temperature known
+            as the <strong>austenite finish temperature (A<sub>f</sub>)</strong>.
+            This behaviour arises from a reversible solid-state phase transformation
+            between two crystal structures — <strong>martensite</strong> and
+            <strong>austenite</strong>.
+          </p>
+        </div>
+
+        <div class="two-col two-col--center" style="margin-top: var(--space-10);">
+          <div data-reveal>
+            <p class="section-label">The Core Phenomenon</p>
+            <h2 class="section-title">Why Metals Can "Remember"</h2>
+            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: var(--space-4);">
+              Ordinary metals deform permanently when bent past their elastic limit.
+              SMAs are different — their internal crystal structure can switch
+              between two stable phases depending on temperature and stress.
+            </p>
+            <p style="color: var(--text-muted); line-height: 1.8;">
+              This transformation is not just elastic springback. The atoms
+              literally <strong style="color: var(--text);">reorganise themselves</strong>
+              into a different arrangement, then reorganise back — carrying the
+              material's shape information with them each time.
+            </p>
+          </div>
+
+          <div data-reveal data-delay="2">
+            <div class="callout">
+              <div class="callout__icon">🌡️</div>
+              <div class="callout__text">
+                <strong>Key Temperature: A<sub>f</sub></strong><br>
+                For Nitinol used in biomedical devices, A<sub>f</sub> is tuned
+                to just below <strong>37°C</strong> — human body temperature —
+                so the alloy is superelastic at body temp and activates
+                automatically inside the body.
+              </div>
+            </div>
+            <div class="callout" style="margin-top: var(--space-4);">
+              <div class="callout__icon">⚗️</div>
+              <div class="callout__text">
+                <strong>It's not shape memory like rubber.</strong><br>
+                Rubber is elastic — it stores mechanical energy. SMAs
+                store <strong>thermodynamic information</strong> in their
+                crystal lattice. A completely different mechanism.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════ TWO EFFECTS ═══════════════════ -->
+    <section class="section" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+      <div class="container--narrow">
+        <p class="section-label" data-reveal>The Two Behaviours</p>
+        <h2 class="section-title" data-reveal data-delay="1">
+          Shape Memory Effect vs Superelasticity
+        </h2>
+        <p class="section-subtitle" data-reveal data-delay="2">
+          SMAs exhibit two distinct behaviours depending on the temperature
+          at which deformation occurs.
+        </p>
+
+        <div class="effect-cards">
+          <div class="effect-card effect-card--orange" data-reveal data-delay="1">
+            <div class="effect-card__accent"></div>
+            <div class="effect-card__number">01</div>
+            <div class="effect-card__label">Effect One</div>
+            <h3 class="effect-card__title">Shape Memory Effect</h3>
+            <p class="effect-card__desc">
+              The alloy is deformed while cold (in the martensite phase).
+              When heated above A<sub>f</sub>, it snaps back to its
+              original shape — seemingly defying permanent deformation.
+            </p>
+            <div class="effect-card__steps">
+              <div class="effect-step">
+                <div class="effect-step__dot"></div>
+                <span>Cool below M<sub>f</sub> → martensite phase</span>
+              </div>
+              <div class="effect-step">
+                <div class="effect-step__dot"></div>
+                <span>Apply stress → deformation occurs</span>
+              </div>
+              <div class="effect-step">
+                <div class="effect-step__dot"></div>
+                <span>Remove stress → shape stays deformed</span>
+              </div>
+              <div class="effect-step">
+                <div class="effect-step__dot"></div>
+                <span>Heat above A<sub>f</sub> → original shape returns</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="effect-card effect-card--teal" data-reveal data-delay="2">
+            <div class="effect-card__accent"></div>
+            <div class="effect-card__number">02</div>
+            <div class="effect-card__label">Effect Two</div>
+            <h3 class="effect-card__title">Superelasticity</h3>
+            <p class="effect-card__desc">
+              Above A<sub>f</sub>, the alloy can be deformed up to 8% strain
+              and will spring back <em>without any heating</em> once the
+              stress is removed. Used in orthodontic wires and stents.
+            </p>
+            <div class="effect-card__steps">
+              <div class="effect-step">
+                <div class="effect-step__dot"></div>
+                <span>Temperature above A<sub>f</sub> → austenite phase</span>
+              </div>
+              <div class="effect-step">
+                <div class="effect-step__dot"></div>
+                <span>Apply stress → stress-induced martensite</span>
+              </div>
+              <div class="effect-step">
+                <div class="effect-step__dot"></div>
+                <span>Remove stress → reverts to austenite</span>
+              </div>
+              <div class="effect-step">
+                <div class="effect-step__dot"></div>
+                <span>Shape fully recovers — no heating needed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ NITINOL ═══════════════════ -->
+    <section class="section">
+      <div class="container--narrow">
+        <p class="section-label" data-reveal>The Most Common SMA</p>
+        <h2 class="section-title" data-reveal data-delay="1">Nitinol — NiTi Alloy</h2>
+
+        <div class="two-col" style="margin-top: var(--space-8);">
+          <div data-reveal data-delay="1">
+            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: var(--space-5);">
+              <strong style="color: var(--text);">Nitinol</strong> (Nickel-Titanium Naval Ordnance Laboratory)
+              is the most commercially significant SMA. Discovered in 1962 by
+              William Buehler and Frederick Wang, it consists of nearly equal
+              atomic percentages of nickel and titanium.
+            </p>
+
+            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: var(--space-6);">
+              The exact ratio can be tuned to adjust the transformation
+              temperature — making it suitable for everything from
+              cryogenic applications to high-temperature aerospace actuators.
+            </p>
+
+            <div>
+              <p style="font-size: var(--text-xs); text-transform: uppercase;
+                        letter-spacing: 0.1em; color: var(--text-faint);
+                        margin-bottom: var(--space-3);">Typical Composition</p>
+              <div class="composition-bar">
+                <div class="composition-bar__ni" style="flex: 55;">
+                  Ni — 55 at%
+                </div>
+                <div class="composition-bar__ti" style="flex: 45;">
+                  Ti — 45 at%
+                </div>
+              </div>
+              <p style="font-size: var(--text-xs); color: var(--text-faint); margin-top: var(--space-2);">
+                Atomic percentage composition of near-equiatomic Nitinol
+              </p>
+            </div>
+          </div>
+
+          <div data-reveal data-delay="2">
+            <div class="property-grid">
+              <div class="property-stat">
+                <div class="property-stat__value text-teal">6.45</div>
+                <div class="property-stat__label">g/cm³ Density</div>
+              </div>
+              <div class="property-stat">
+                <div class="property-stat__value text-accent">8–10%</div>
+                <div class="property-stat__label">Max Recoverable Strain</div>
+              </div>
+              <div class="property-stat">
+                <div class="property-stat__value" style="color: var(--text);">~500</div>
+                <div class="property-stat__label">MPa Recovery Stress</div>
+              </div>
+              <div class="property-stat">
+                <div class="property-stat__value text-teal">−20°C</div>
+                <div class="property-stat__label">to +110°C Range</div>
+              </div>
+              <div class="property-stat">
+                <div class="property-stat__value text-accent">10⁶+</div>
+                <div class="property-stat__label">Fatigue Cycles</div>
+              </div>
+              <div class="property-stat">
+                <div class="property-stat__value" style="color: var(--text);">Bio</div>
+                <div class="property-stat__label">Compatible Material</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ COMPARISON TABLE ═══════════════════ -->
+    <section class="section" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+      <div class="container--narrow">
+        <p class="section-label" data-reveal>How It Stacks Up</p>
+        <h2 class="section-title" data-reveal data-delay="1">
+          Nitinol vs Conventional Materials
+        </h2>
+
+        <div style="overflow-x: auto; margin-top: var(--space-8);" data-reveal data-delay="2">
+          <table class="compare-table" role="table">
+            <thead>
+              <tr>
+                <th scope="col">Property</th>
+                <th scope="col">Nitinol (SMA)</th>
+                <th scope="col">Stainless Steel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Recoverable Strain</td>
+                <td><strong>8–10%</strong> superelastic</td>
+                <td><strong>~0.5%</strong> elastic only</td>
+              </tr>
+              <tr>
+                <td>Shape Recovery</td>
+                <td><strong>Full recovery</strong> via heat or stress removal</td>
+                <td><strong>None</strong> — permanent deformation</td>
+              </tr>
+              <tr>
+                <td>Biocompatibility</td>
+                <td><strong>Excellent</strong> — used in implants</td>
+                <td><strong>Good</strong> — but not as inert</td>
+              </tr>
+              <tr>
+                <td>Damping Capacity</td>
+                <td><strong>High</strong> — absorbs vibration energy</td>
+                <td><strong>Low</strong> — transmits vibration</td>
+              </tr>
+              <tr>
+                <td>Density</td>
+                <td><strong>6.45 g/cm³</strong></td>
+                <td><strong>7.9 g/cm³</strong> — heavier</td>
+              </tr>
+              <tr>
+                <td>Corrosion Resistance</td>
+                <td><strong>Excellent</strong> — TiO₂ passive layer</td>
+                <td><strong>Good</strong> — Cr₂O₃ passive layer</td>
+              </tr>
+              <tr>
+                <td>Cost</td>
+                <td><strong>High</strong> — complex processing</td>
+                <td><strong>Low</strong> — mass produced</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ NEXT PAGE CTA ═══════════════════ -->
+    <section class="section">
+      <div class="container--narrow">
+        <a href="./phases.html" class="next-cta" data-reveal>
+          <div>
+            <p class="next-cta__label">Next Up</p>
+            <h2 class="next-cta__title">Phases — Martensite & Austenite</h2>
+            <p class="next-cta__desc">
+              Dive into the two crystal structures that give SMAs their
+              remarkable memory — and the science of how they switch.
+            </p>
+          </div>
+          <div>
+            <span class="btn btn-primary">
+              Next Page
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+            <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+              <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                    stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+            </svg>
+            <span class="navbar__logo-text">SMA <span>Forge</span></span>
+          </a>
+          <p>An interactive educational platform exploring Shape Memory Alloys, Nitinol chemistry, and smart materials engineering.</p>
+        </div>
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <div class="footer__nav-group">
+            <h4>Learn</h4>
+            <ul role="list">
+              <li><a href="./concept.html">The Concept</a></li>
+              <li><a href="./phases.html">Phases</a></li>
+              <li><a href="./applications.html">Applications</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-group">
+            <h4>Explore</h4>
+            <ul role="list">
+              <li><a href="./history.html">History</a></li>
+              <li><a href="./sdgs.html">SDGs</a></li>
+              <li><a href="./about.html">about</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 SMA Forge. Built for educational purposes.</span>
+        <span>Shape Memory Alloys — Where Chemistry Meets Engineering.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/navbar.js"></script>
+</body>
+</html>

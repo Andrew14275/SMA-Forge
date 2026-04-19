@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Meet the team behind SMA Forge — a student project exploring Shape Memory Alloys for chemistry education." />
+  <title>About — SMA Forge</title>
+
+  <script src="./js/theme.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+
+  <style>
+    /* ── About-specific styles ── */
+
+    /* Team grid */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-6);
+      margin-top: var(--space-10);
+    }
+
+    .team-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .team-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Top colour stripe — alternates accent / teal */
+    .team-card__stripe {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .team-card--accent .team-card__stripe { background: var(--accent); }
+    .team-card--teal   .team-card__stripe { background: var(--teal); }
+
+    /* Avatar placeholder */
+    .team-card__avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-5);
+    }
+
+    .team-card--accent .team-card__avatar {
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+
+    .team-card--teal .team-card__avatar {
+      background: var(--teal-glow);
+      color: var(--teal);
+    }
+
+    .team-card__roll {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      margin-bottom: var(--space-1);
+    }
+
+    .team-card--accent .team-card__roll { color: var(--accent); }
+    .team-card--teal   .team-card__roll { color: var(--teal); }
+
+    .team-card__name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-2);
+      line-height: 1.15;
+    }
+
+    .team-card__role {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .team-card__divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin-block: var(--space-5);
+    }
+
+    .team-card__contribution {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Methodology steps */
+    .methodology-steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      margin-top: var(--space-8);
+    }
+
+    .method-step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: var(--space-5);
+      align-items: start;
+    }
+
+    .method-step__number {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-faint);
+      flex-shrink: 0;
+      letter-spacing: 0.04em;
+    }
+
+    .method-step__content h4 {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-2);
+    }
+
+    .method-step__content p {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Why this site block */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      margin-top: var(--space-8);
+    }
+
+    .why-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      transition: border-color var(--transition);
+    }
+
+    .why-card:hover { border-color: var(--border-hover); }
+
+    .why-card__icon {
+      font-size: 1.6rem;
+      margin-bottom: var(--space-4);
+    }
+
+    .why-card__title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-2);
+    }
+
+    .why-card__desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Project stat bar */
+    .project-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-block: var(--space-12);
+      padding: var(--space-8);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+    }
+
+    .project-stat {
+      text-align: center;
+    }
+
+    .project-stat__value {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: var(--space-2);
+      letter-spacing: 0.03em;
+    }
+
+    .project-stat__label {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      line-height: 1.4;
+    }
+
+    /* Acknowledgement block */
+    .ack-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--teal);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6) var(--space-8);
+      margin-top: var(--space-8);
+    }
+
+    .ack-block p {
+      font-size: var(--text-base);
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .ack-block strong { color: var(--text); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .why-grid { grid-template-columns: 1fr; }
+      .project-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .project-stats { grid-template-columns: 1fr 1fr; gap: var(--space-3); padding: var(--space-6); }
+      .team-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body class="page-enter">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar__inner">
+      <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+        <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+          <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+        </svg>
+        <span class="navbar__logo-text">SMA <span>Forge</span></span>
+      </a>
+
+      <ul class="navbar__links" role="list">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./concept.html">Concept</a></li>
+        <li><a href="./phases.html">Phases</a></li>
+        <li><a href="./applications.html">Applications</a></li>
+        <li><a href="./history.html">History</a></li>
+        <li><a href="./sdgs.html">SDGs</a></li>
+        <li><a href="./about.html">About</a></li>
+      </ul>
+
+      <div class="navbar__controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode"></button>
+        <button class="navbar__hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="navbar__mobile" id="mobile-menu">
+    <a href="./index.html">Home</a>
+    <a href="./concept.html">Concept</a>
+    <a href="./phases.html">Phases</a>
+    <a href="./applications.html">Applications</a>
+    <a href="./history.html">History</a>
+    <a href="./sdgs.html">SDGs</a>
+    <a href="./about.html">About</a>
+  </div>
+
+  <main id="main">
+
+    <!-- ═══════════════════ PAGE HERO ═══════════════════ -->
+    <section class="page-hero" style="background: radial-gradient(ellipse 70% 50% at 20% 50%, rgba(79,152,163,0.06), transparent);">
+      <div class="container--narrow">
+        <p class="page-hero__label hero-animate-1">The Team</p>
+        <h1 class="page-hero__title hero-animate-2">
+          Built By Students,<br>
+          <span class="gradient-text">For Students.</span>
+        </h1>
+        <p class="page-hero__subtitle hero-animate-3">
+          SMA Forge is a chemistry SLA project created to make Shape Memory
+          Alloys accessible, visual, and genuinely interesting — turning
+          a dense material science topic into something you actually want to explore.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ PROJECT STATS ═══════════════════ -->
+    <section class="section" style="padding-bottom: 0;">
+      <div class="container--narrow">
+        <div class="project-stats" data-reveal>
+          <div class="project-stat">
+            <div class="project-stat__value text-accent">6</div>
+            <div class="project-stat__label">Pages Built</div>
+          </div>
+          <div class="project-stat">
+            <div class="project-stat__value text-teal">1</div>
+            <div class="project-stat__label">Topic Explored</div>
+          </div>
+          <div class="project-stat">
+            <div class="project-stat__value" style="color: var(--text);">4</div>
+            <div class="project-stat__label">Team Members</div>
+          </div>
+          <div class="project-stat">
+            <div class="project-stat__value text-accent">∞</div>
+            <div class="project-stat__label">Cups of Coffee</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ TEAM CARDS ═══════════════════ -->
+    <section class="section">
+      <div class="container--narrow">
+        <p class="section-label" data-reveal>The People</p>
+        <h2 class="section-title" data-reveal data-delay="1">Meet the Team</h2>
+        <p class="section-subtitle" data-reveal data-delay="2">
+          Each member brought a different strength to the project —
+          replace the placeholders below with your real info.
+        </p>
+
+        <div class="team-grid">
+
+          <!-- Member 1 -->
+          <div class="team-card team-card--accent" data-reveal data-delay="1">
+            <div class="team-card__stripe"></div>
+            <div class="team-card__avatar">AB</div>
+            <p class="team-card__roll">Roll No. — 01</p>
+            <h3 class="team-card__name">Student Name A</h3>
+            <p class="team-card__role">Project Lead & Research</p>
+            <hr class="team-card__divider">
+            <p class="team-card__contribution">
+              Led the overall structure of the project, handled topic research,
+              and coordinated the team's workflow throughout the SLA.
+            </p>
+          </div>
+
+          <!-- Member 2 -->
+          <div class="team-card team-card--teal" data-reveal data-delay="2">
+            <div class="team-card__stripe"></div>
+            <div class="team-card__avatar">CD</div>
+            <p class="team-card__roll">Roll No. — 02</p>
+            <h3 class="team-card__name">Student Name B</h3>
+            <p class="team-card__role">Web Design & Development</p>
+            <hr class="team-card__divider">
+            <p class="team-card__contribution">
+              Designed the visual identity of SMA Forge, built the HTML/CSS
+              structure, and ensured a consistent look across all pages.
+            </p>
+          </div>
+
+          <!-- Member 3 -->
+          <div class="team-card team-card--teal" data-reveal data-delay="3">
+            <div class="team-card__stripe"></div>
+            <div class="team-card__avatar">EF</div>
+            <p class="team-card__roll">Roll No. — 03</p>
+            <h3 class="team-card__name">Student Name C</h3>
+            <p class="team-card__role">Content & Chemistry Writing</p>
+            <hr class="team-card__divider">
+            <p class="team-card__contribution">
+              Researched and wrote the scientific content across the Concept,
+              Phases, and History pages, ensuring accuracy and clarity.
+            </p>
+          </div>
+
+          <!-- Member 4 -->
+          <div class="team-card team-card--accent" data-reveal data-delay="4">
+            <div class="team-card__stripe"></div>
+            <div class="team-card__avatar">GH</div>
+            <p class="team-card__roll">Roll No. — 04</p>
+            <h3 class="team-card__name">Student Name D</h3>
+            <p class="team-card__role">SDGs, Applications & QA</p>
+            <hr class="team-card__divider">
+            <p class="team-card__contribution">
+              Covered the Applications and SDG sections, cross-checked all
+              facts, and tested the site on multiple devices before deployment.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ METHODOLOGY ═══════════════════ -->
+    <section class="section" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+      <div class="container--narrow">
+        <p class="section-label" data-reveal>How We Made It</p>
+        <h2 class="section-title" data-reveal data-delay="1">Our Methodology</h2>
+        <p class="section-subtitle" data-reveal data-delay="2">
+          A structured, four-step process from topic selection to deployment —
+          designed to balance research depth with presentation quality.
+        </p>
+
+        <div class="methodology-steps">
+
+          <div class="method-step" data-reveal data-delay="1">
+            <div class="method-step__number">01</div>
+            <div class="method-step__content">
+              <h4>Topic Research & Scoping</h4>
+              <p>
+                We began by identifying Shape Memory Alloys as our focus material —
+                chosen for their relevance to SDGs 3, 9, and 12, and their
+                strong cross-disciplinary appeal across chemistry, physics, and
+                engineering. Academic papers, NCERT references, and peer-reviewed
+                journals formed our primary sources.
+              </p>
+            </div>
+          </div>
+
+          <div class="method-step" data-reveal data-delay="2">
+            <div class="method-step__number">02</div>
+            <div class="method-step__content">
+              <h4>Information Architecture</h4>
+              <p>
+                Content was organised into six logical sections — Concept, Phases,
+                Applications, History, SDGs, and About — each designed to stand
+                alone while building on the previous. We mapped the learning journey
+                before writing a single line of content or code.
+              </p>
+            </div>
+          </div>
+
+          <div class="method-step" data-reveal data-delay="3">
+            <div class="method-step__number">03</div>
+            <div class="method-step__content">
+              <h4>Design & Development</h4>
+              <p>
+                Using a custom design system (SMA Forge tokens), we built each
+                page as a real, separate HTML file — not a simulated single-page
+                app. Dark mode, responsive layouts, scroll animations, and a
+                light/dark toggle were implemented for accessibility and polish.
+              </p>
+            </div>
+          </div>
+
+          <div class="method-step" data-reveal data-delay="4">
+            <div class="method-step__number">04</div>
+            <div class="method-step__content">
+              <h4>Review, Testing & Deployment</h4>
+              <p>
+                All pages were reviewed for factual accuracy, tested on mobile and
+                desktop browsers, and cross-checked against the project rubric.
+                The site was deployed to GitHub Pages for public access,
+                with a companion Chemistry Quiz site linked from the homepage.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ WHY THIS SITE ═══════════════════ -->
+    <section class="section">
+      <div class="container--narrow">
+        <p class="section-label" data-reveal>Purpose & Value</p>
+        <h2 class="section-title" data-reveal data-delay="1">Why SMA Forge Exists</h2>
+        <p class="section-subtitle" data-reveal data-delay="2">
+          Most resources on Shape Memory Alloys are either too technical for students
+          or too shallow to be useful. We wanted something in between.
+        </p>
+
+        <div class="why-grid">
+
+          <div class="why-card" data-reveal data-delay="1">
+            <div class="why-card__icon">📚</div>
+            <h3 class="why-card__title">Curriculum Aligned</h3>
+            <p class="why-card__desc">
+              All content is grounded in class-level chemistry — covering
+              phase transitions, alloy chemistry, and material science
+              concepts that appear in standard syllabi.
+            </p>
+          </div>
+
+          <div class="why-card" data-reveal data-delay="2">
+            <div class="why-card__icon">🌍</div>
+            <h3 class="why-card__title">SDG Connected</h3>
+            <p class="why-card__desc">
+              We link material science directly to real-world sustainability
+              goals — showing how a single alloy can impact healthcare,
+              infrastructure, and responsible manufacturing.
+            </p>
+          </div>
+
+          <div class="why-card" data-reveal data-delay="3">
+            <div class="why-card__icon">🎯</div>
+            <h3 class="why-card__title">Visually Interactive</h3>
+            <p class="why-card__desc">
+              Phase diagrams, timelines, and interactive toggles replace
+              dense paragraphs. We believe visual learning accelerates
+              understanding of abstract concepts like crystal transformation.
+            </p>
+          </div>
+
+          <div class="why-card" data-reveal data-delay="4">
+            <div class="why-card__icon">🔓</div>
+            <h3 class="why-card__title">Freely Accessible</h3>
+            <p class="why-card__desc">
+              Deployed on GitHub Pages with no login, no paywall, no ads.
+              Any student with a browser can access the full site —
+              that's the point of open educational resources.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="ack-block" data-reveal style="margin-top: var(--space-12);">
+          <p>
+            <strong>Acknowledgements —</strong> We thank our chemistry faculty for
+            guiding the scope of this project and for encouraging us to present
+            scientific content in a format that goes beyond a traditional report.
+            All references used are from verified academic and scientific sources.
+            This site was built entirely by the student team listed above
+            as part of our <strong>Student Learning Assessment (SLA)</strong>.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════ BACK TO HOME CTA ═══════════════════ -->
+    <section class="section">
+      <div class="container--narrow">
+        <a href="./index.html" class="next-cta" data-reveal style="
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-2xl);
+          padding: var(--space-10) var(--space-12);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: var(--space-8);
+          margin-top: var(--space-4);
+          transition: border-color var(--transition);
+          text-decoration: none;
+        ">
+          <div>
+            <p style="font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-faint); margin-bottom: var(--space-2);">Back to Start</p>
+            <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 400; letter-spacing: 0.03em;">Return to Home</h2>
+            <p style="font-size: var(--text-sm); color: var(--text-muted); margin-top: var(--space-2); max-width: 45ch;">
+              Revisit the hero, explore the site from the beginning, or
+              jump to the Chemistry Quiz.
+            </p>
+          </div>
+          <div>
+            <span class="btn btn-teal">
+              Go Home
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+            <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+              <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                    stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+            </svg>
+            <span class="navbar__logo-text">SMA <span>Forge</span></span>
+          </a>
+          <p>An interactive educational platform exploring Shape Memory Alloys, Nitinol chemistry, and smart materials engineering.</p>
+        </div>
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <div class="footer__nav-group">
+            <h4>Learn</h4>
+            <ul role="list">
+              <li><a href="./concept.html">The Concept</a></li>
+              <li><a href="./phases.html">Phases</a></li>
+              <li><a href="./applications.html">Applications</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-group">
+            <h4>Explore</h4>
+            <ul role="list">
+              <li><a href="./history.html">History</a></li>
+              <li><a href="./sdgs.html">SDGs</a></li>
+              <li><a href="./about.html">About</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 SMA Forge. Built for educational purposes.</span>
+        <span>Shape Memory Alloys — Where Chemistry Meets Engineering.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/navbar.js"></script>
+</body>
+</html>

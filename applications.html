@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Real-world applications of Shape Memory Alloys — from cardiac stents to aerospace actuators, robotics, and consumer electronics." />
+  <title>Applications — SMA Forge</title>
+
+  <script src="./js/theme.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+
+  <style>
+
+    /* ── Sector tabs ── */
+    .sector-tabs {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-10);
+    }
+
+    .sector-tab {
+      padding: var(--space-2) var(--space-5);
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .sector-tab:hover,
+    .sector-tab.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(232,100,58,0.08);
+    }
+
+    /* ── Sector section ── */
+    .sector {
+      margin-bottom: var(--space-16);
+    }
+
+    .sector__header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-6);
+      margin-bottom: var(--space-8);
+      padding-bottom: var(--space-6);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sector__icon {
+      font-size: 2.5rem;
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+    }
+
+    .sector__number {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-faint);
+      font-weight: 600;
+      margin-bottom: var(--space-1);
+    }
+
+    .sector__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-2);
+    }
+
+    .sector__subtitle {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      max-width: 65ch;
+      line-height: 1.7;
+    }
+
+    /* ── Application cards grid ── */
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+
+    .app-grid--2col {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      transition: border-color var(--transition), transform var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .app-card__top-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .sector--medical    .app-card__top-bar { background: linear-gradient(90deg, #e8643a, #e07a50); }
+    .sector--aerospace  .app-card__top-bar { background: linear-gradient(90deg, #4f98a3, #7dc5cc); }
+    .sector--robotics   .app-card__top-bar { background: linear-gradient(90deg, #9b6fd4, #b892e8); }
+    .sector--consumer   .app-card__top-bar { background: linear-gradient(90deg, #d4a43a, #e8c44a); }
+    .sector--civil      .app-card__top-bar { background: linear-gradient(90deg, #3ab87a, #5cd496); }
+
+    .app-card__emoji {
+      font-size: 1.8rem;
+      margin-bottom: var(--space-1);
+    }
+
+    .app-card__title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+
+    .app-card__desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .app-card__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      color: var(--text-faint);
+      width: fit-content;
+      margin-top: var(--space-1);
+    }
+
+    .sector--medical   .app-card__tag { color: var(--accent);    border-color: rgba(232,100,58,0.3); background: rgba(232,100,58,0.06); }
+    .sector--aerospace .app-card__tag { color: var(--teal);      border-color: rgba(79,152,163,0.3); background: rgba(79,152,163,0.06); }
+    .sector--robotics  .app-card__tag { color: #9b6fd4;          border-color: rgba(155,111,212,0.3); background: rgba(155,111,212,0.06); }
+    .sector--consumer  .app-card__tag { color: #d4a43a;          border-color: rgba(212,164,58,0.3); background: rgba(212,164,58,0.06); }
+    .sector--civil     .app-card__tag { color: #3ab87a;          border-color: rgba(58,184,122,0.3); background: rgba(58,184,122,0.06); }
+
+    /* ── Featured card (wide) ── */
+    .app-card--featured {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+
+    .app-card--featured .app-card__content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .app-card--featured .app-card__stats {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .app-stat {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+    }
+
+    .app-stat__value {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: var(--space-1);
+    }
+
+    .app-stat__label {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .sector--medical   .app-stat__value { color: var(--accent); }
+    .sector--aerospace .app-stat__value { color: var(--teal); }
+    .sector--robotics  .app-stat__value { color: #9b6fd4; }
+    .sector--consumer  .app-stat__value { color: #d4a43a; }
+    .sector--civil     .app-stat__value { color: #3ab87a; }
+
+    /* ── Market callout strip ── */
+    .market-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-block: var(--space-10);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+    }
+
+    .market-stat {
+      text-align: center;
+      padding: var(--space-4);
+      border-right: 1px solid var(--border);
+    }
+
+    .market-stat:last-child { border-right: none; }
+
+    .market-stat__value {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .market-stat__label {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      line-height: 1.5;
+    }
+
+    /* ── Section divider ── */
+    .section-divider {
+      display: flex; align-items: center; gap: var(--space-4);
+      margin-block: var(--space-10);
+    }
+    .section-divider__line { flex: 1; height: 1px; background: var(--border); }
+    .section-divider__label {
+      font-size: var(--text-xs); text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--text-faint); white-space: nowrap;
+    }
+
+    /* ── Callout ── */
+    .callout {
+      display: flex; gap: var(--space-4);
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6);
+      margin-top: var(--space-6);
+    }
+    .callout__icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+    .callout__text { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.7; }
+    .callout__text strong { color: var(--text); }
+
+    /* ── Next CTA ── */
+    .next-cta {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10) var(--space-12);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: var(--space-8);
+      margin-top: var(--space-16); text-decoration: none;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .next-cta:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .next-cta__label {
+      font-size: var(--text-xs); text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-faint); margin-bottom: var(--space-2);
+    }
+    .next-cta__title {
+      font-family: var(--font-display); font-size: var(--text-2xl);
+      font-weight: 400; letter-spacing: 0.03em; color: var(--text);
+    }
+    .next-cta__desc {
+      font-size: var(--text-sm); color: var(--text-muted);
+      margin-top: var(--space-2); max-width: 45ch;
+    }
+    .next-cta__arrow {
+      font-size: 2rem; color: var(--accent); flex-shrink: 0;
+      transition: transform var(--transition);
+    }
+    .next-cta:hover .next-cta__arrow { transform: translateX(6px); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .app-grid { grid-template-columns: 1fr 1fr; }
+      .app-card--featured { grid-column: span 2; grid-template-columns: 1fr; }
+      .market-strip { grid-template-columns: 1fr 1fr; }
+      .market-stat:nth-child(2) { border-right: none; }
+      .market-stat:nth-child(3) { border-top: 1px solid var(--border); }
+      .market-stat:nth-child(4) { border-top: 1px solid var(--border); }
+    }
+
+    @media (max-width: 600px) {
+      .app-grid { grid-template-columns: 1fr; }
+      .app-grid--2col { grid-template-columns: 1fr; }
+      .app-card--featured { grid-column: span 1; }
+      .market-strip { grid-template-columns: 1fr 1fr; padding: var(--space-5); }
+      .next-cta { flex-direction: column; align-items: flex-start; padding: var(--space-8); }
+    }
+  </style>
+</head>
+
+<body class="page-enter">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar__inner">
+      <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+        <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+          <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+        </svg>
+        <span class="navbar__logo-text">SMA <span>Forge</span></span>
+      </a>
+      <ul class="navbar__links" role="list">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./concept.html">Concept</a></li>
+        <li><a href="./phases.html">Phases</a></li>
+        <li><a href="./applications.html" aria-current="page">Applications</a></li>
+        <li><a href="./history.html">History</a></li>
+        <li><a href="./sdgs.html">SDGs</a></li>
+        <li><a href="./quiz.html">Quiz</a></li>
+      </ul>
+      <div class="navbar__controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode"></button>
+        <button class="navbar__hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div class="navbar__mobile" id="mobile-menu">
+    <a href="./index.html">Home</a>
+    <a href="./concept.html">Concept</a>
+    <a href="./phases.html">Phases</a>
+    <a href="./applications.html">Applications</a>
+    <a href="./history.html">History</a>
+    <a href="./sdgs.html">SDGs</a>
+    <a href="./quiz.html">Quiz</a>
+  </div>
+
+  <main id="main">
+
+    <!-- PAGE HERO -->
+    <section class="page-hero" style="background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(232,100,58,0.05), transparent);">
+      <div class="container--narrow">
+        <p class="page-hero__label hero-animate-1">03 — Applications</p>
+        <h1 class="page-hero__title hero-animate-2">Where SMAs<br/>Meet the World.</h1>
+        <p class="page-hero__subtitle hero-animate-3">
+          Shape Memory Alloys aren't laboratory curiosities — they are deployed in
+          life-saving medical devices, deep-space missions, next-generation robots,
+          and the gadgets in your pocket. Here's where the science becomes real.
+        </p>
+      </div>
+    </section>
+
+    <div class="container--narrow">
+
+      <!-- MARKET STATS STRIP -->
+      <div class="market-strip" data-reveal>
+        <div class="market-stat">
+          <p class="market-stat__value" style="color:var(--accent);">$17.65B</p>
+          <p class="market-stat__label">Global SMA market<br/>value (2023)</p>
+        </div>
+        <div class="market-stat">
+          <p class="market-stat__value" style="color:var(--teal);">~13%</p>
+          <p class="market-stat__label">Projected CAGR<br/>2024–2030</p>
+        </div>
+        <div class="market-stat">
+          <p class="market-stat__value" style="color:#9b6fd4;">1.5M+</p>
+          <p class="market-stat__label">Nitinol stent<br/>procedures / year</p>
+        </div>
+        <div class="market-stat">
+          <p class="market-stat__value" style="color:#d4a43a;">60%</p>
+          <p class="market-stat__label">Share held by<br/>medical sector</p>
+        </div>
+      </div>
+
+      <!-- SECTION DIVIDER -->
+      <div class="section-divider" data-reveal>
+        <div class="section-divider__line"></div>
+        <span class="section-divider__label">Sector Breakdown</span>
+        <div class="section-divider__line"></div>
+      </div>
+
+      <!-- ═══ SECTOR 1: MEDICAL ═══ -->
+      <section class="sector sector--medical" id="medical" aria-labelledby="sector-medical-title" data-reveal>
+        <div class="sector__header">
+          <div class="sector__icon" aria-hidden="true">🫀</div>
+          <div>
+            <p class="sector__number">Sector 01</p>
+            <h2 class="sector__title" id="sector-medical-title">Medical &amp; Biomedical</h2>
+            <p class="sector__subtitle">
+              The biocompatibility of Nitinol — near-identical elastic modulus to bone,
+              corrosion resistance in bodily fluids, MRI compatibility — makes it the
+              dominant SMA in medicine. Its ability to self-expand at body temperature
+              (37°C) is uniquely exploited.
+            </p>
+          </div>
+        </div>
+
+        <div class="app-grid">
+          <!-- Featured card -->
+          <div class="app-card app-card--featured">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__content">
+              <div class="app-card__emoji">🩺</div>
+              <h3 class="app-card__title">Cardiovascular Stents</h3>
+              <p class="app-card__desc">
+                Nitinol stents are compressed into a catheter in their martensitic
+                state (cold, ~0°C), inserted into a blocked artery, then released.
+                At body temperature (37°C) they self-expand to their memorised
+                diameter, propping the artery open permanently. No mechanical
+                deployment needed — the patient's own body heat activates the device.
+              </p>
+              <span class="app-card__tag">● Self-expanding</span>
+            </div>
+            <div class="app-card__stats">
+              <div class="app-stat">
+                <p class="app-stat__value">1.5M+</p>
+                <p class="app-stat__label">Implants per year worldwide</p>
+              </div>
+              <div class="app-stat">
+                <p class="app-stat__value">37°C</p>
+                <p class="app-stat__label">Body-temperature activation</p>
+              </div>
+              <div class="app-stat">
+                <p class="app-stat__value">99%</p>
+                <p class="app-stat__label">Nitinol share of self-expanding stents</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular cards -->
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🦷</div>
+            <h3 class="app-card__title">Orthodontic Archwires</h3>
+            <p class="app-card__desc">
+              Nitinol archwires exert a continuous, gentle force on teeth throughout
+              the day. Unlike steel wires that lose tension, Nitinol wires use their
+              superelastic property to maintain constant pressure — reducing adjustment
+              visits and accelerating treatment by up to 40%.
+            </p>
+            <span class="app-card__tag">● Superelastic</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🔬</div>
+            <h3 class="app-card__title">Surgical Guidewires</h3>
+            <p class="app-card__desc">
+              Nitinol guidewires navigate tortuous vascular anatomy without kinking.
+              They can be bent to near-180° and spring back perfectly — a failure mode
+              that would be catastrophic with steel. Used in neurosurgery, cardiology,
+              and minimally invasive procedures worldwide.
+            </p>
+            <span class="app-card__tag">● Kink-resistant</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🧠</div>
+            <h3 class="app-card__title">Neurovascular Devices</h3>
+            <p class="app-card__desc">
+              Flow diverters and clot retrieval devices (thrombectomy stents) for
+              stroke treatment. These mesh-like devices are delivered collapsed,
+              then expand in the brain's blood vessels to capture or redirect blood
+              flow — dramatically improving stroke survival outcomes.
+            </p>
+            <span class="app-card__tag">● Life-saving</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🦴</div>
+            <h3 class="app-card__title">Bone Anchors &amp; Staples</h3>
+            <p class="app-card__desc">
+              SMA staples used in spinal fusion and fracture repair clamp together
+              bone segments with a force that self-adjusts as the bone heals and
+              swells — preventing the fixation failure common with rigid titanium
+              hardware.
+            </p>
+            <span class="app-card__tag">● Adaptive fixation</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTOR 2: AEROSPACE ═══ -->
+      <section class="sector sector--aerospace" id="aerospace" aria-labelledby="sector-aerospace-title" data-reveal>
+        <div class="sector__header">
+          <div class="sector__icon" aria-hidden="true">🚀</div>
+          <div>
+            <p class="sector__number">Sector 02</p>
+            <h2 class="sector__title" id="sector-aerospace-title">Aerospace &amp; Defence</h2>
+            <p class="sector__subtitle">
+              Space and aviation demand lightweight, reliable actuation with zero
+              mechanical complexity. SMAs replace hydraulic systems, motors, and
+              gearboxes with a single alloy wire — reducing weight, failure points,
+              and power consumption simultaneously.
+            </p>
+          </div>
+        </div>
+
+        <div class="app-grid">
+          <div class="app-card app-card--featured">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__content">
+              <div class="app-card__emoji">🛸</div>
+              <h3 class="app-card__title">Deployable Space Structures</h3>
+              <p class="app-card__desc">
+                NASA uses Nitinol actuators in spacecraft to deploy solar panels,
+                antenna booms, and instrument arms after launch. The SMA is locked
+                in its deformed (martensitic) state during launch, then heated by
+                solar energy or electric current to deploy — no motors, no pyrotechnics,
+                no moving mechanical parts that could jam in the vacuum of space.
+              </p>
+              <span class="app-card__tag">● Zero-motor actuation</span>
+            </div>
+            <div class="app-card__stats">
+              <div class="app-stat">
+                <p class="app-stat__value">−100°C</p>
+                <p class="app-stat__label">Stowed temperature (shadow)</p>
+              </div>
+              <div class="app-stat">
+                <p class="app-stat__value">120°C</p>
+                <p class="app-stat__label">Solar-side activation temp</p>
+              </div>
+              <div class="app-stat">
+                <p class="app-stat__value">0</p>
+                <p class="app-stat__label">Moving mechanical parts needed</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">✈️</div>
+            <h3 class="app-card__title">Adaptive Wing Geometry</h3>
+            <p class="app-card__desc">
+              Boeing and NASA DARPA research programs use SMA wires embedded in
+              wing structures to morph aerofoil shape during flight — changing
+              camber and twist to optimise lift and drag at different flight
+              regimes, reducing fuel consumption by up to 5%.
+            </p>
+            <span class="app-card__tag">● Morphing structures</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🔩</div>
+            <h3 class="app-card__title">Release Mechanisms</h3>
+            <p class="app-card__desc">
+              SMA release pins lock payloads, covers, and instruments during launch
+              vibration, then release on command when heated. Replaces explosive
+              bolts with a reusable, silent, and shock-free mechanism — critical
+              for sensitive scientific instruments.
+            </p>
+            <span class="app-card__tag">● Pyrotechnic-free</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🌡️</div>
+            <h3 class="app-card__title">Thermal Control Valves</h3>
+            <p class="app-card__desc">
+              Passively actuated valves that open or close based on temperature
+              alone — no electronics, no power supply. Used in satellite thermal
+              management systems and spacecraft radiators to regulate heat flow
+              automatically across enormous temperature swings.
+            </p>
+            <span class="app-card__tag">● Passive control</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🛩️</div>
+            <h3 class="app-card__title">Engine Noise Chevrons</h3>
+            <p class="app-card__desc">
+              Boeing 737 MAX uses Nitinol-actuated chevrons on the rear of jet
+              engine nacelles. During takeoff (noisy, needs noise reduction) the
+              SMA bends the chevrons inward; at cruise altitude (cold) they flatten
+              out — optimising thrust. No actuators, no wiring — just temperature.
+            </p>
+            <span class="app-card__tag">● Noise reduction</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTOR 3: ROBOTICS ═══ -->
+      <section class="sector sector--robotics" id="robotics" aria-labelledby="sector-robotics-title" data-reveal>
+        <div class="sector__header">
+          <div class="sector__icon" aria-hidden="true">🤖</div>
+          <div>
+            <p class="sector__number">Sector 03</p>
+            <h2 class="sector__title" id="sector-robotics-title">Robotics &amp; Soft Actuators</h2>
+            <p class="sector__subtitle">
+              SMA wires act as artificial muscles — contracting when heated,
+              relaxing when cooled. This enables soft robots with no rigid joints,
+              grippers that handle delicate objects without sensors, and
+              bio-inspired locomotion at tiny scales.
+            </p>
+          </div>
+        </div>
+
+        <div class="app-grid app-grid--2col">
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">💪</div>
+            <h3 class="app-card__title">Artificial Muscles</h3>
+            <p class="app-card__desc">
+              SMA wire bundles produce contractions analogous to biological muscle —
+              up to 150 MPa stress output from a 0.1mm wire. Used in prosthetic
+              limb actuators, exoskeletons, and haptic interfaces. Far lighter than
+              servo motors for equivalent force output.
+            </p>
+            <span class="app-card__tag">● Bio-inspired</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🪼</div>
+            <h3 class="app-card__title">Soft Robotic Grippers</h3>
+            <p class="app-card__desc">
+              SMA-actuated fingers conform to object shape without force sensors or
+              complex control algorithms. Used in food handling, surgical assistance,
+              and fragile object manipulation. The alloy's compliance prevents
+              damage to delicate payloads.
+            </p>
+            <span class="app-card__tag">● Compliant grasping</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🐛</div>
+            <h3 class="app-card__title">Micro-locomotion</h3>
+            <p class="app-card__desc">
+              Millimetre-scale robots use SMA wires for crawling, swimming, and
+              jumping locomotion. Applications include pipeline inspection, medical
+              capsule endoscopy, and search-and-rescue in rubble where larger robots
+              cannot fit.
+            </p>
+            <span class="app-card__tag">● Miniaturised</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🦾</div>
+            <h3 class="app-card__title">Rehabilitation Exoskeletons</h3>
+            <p class="app-card__desc">
+              Wearable SMA actuator arrays assist stroke patients in finger and
+              wrist rehabilitation. The soft, lightweight structure (vs. rigid
+              motorised splints) allows natural movement patterns and can be worn
+              for hours without fatigue or skin damage.
+            </p>
+            <span class="app-card__tag">● Wearable therapy</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTOR 4: CONSUMER ═══ -->
+      <section class="sector sector--consumer" id="consumer" aria-labelledby="sector-consumer-title" data-reveal>
+        <div class="sector__header">
+          <div class="sector__icon" aria-hidden="true">📱</div>
+          <div>
+            <p class="sector__number">Sector 04</p>
+            <h2 class="sector__title" id="sector-consumer-title">Consumer Electronics</h2>
+            <p class="sector__subtitle">
+              As miniaturisation demands increase, motors and solenoids become
+              too large and power-hungry. SMA micro-actuators fit inside smartphones,
+              cameras, and wearables to deliver precise, silent movement at
+              sub-millimetre scale.
+            </p>
+          </div>
+        </div>
+
+        <div class="app-grid">
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">📷</div>
+            <h3 class="app-card__title">OIS Camera Actuators</h3>
+            <p class="app-card__desc">
+              Apple iPhone 14 Pro and later use SMA wire arrays for Optical Image
+              Stabilisation — replacing voice coil motors with four SMA wires that
+              shift the camera module in 2D. 40% smaller, 25% lower power, completely
+              silent. A landmark adoption of SMAs in consumer hardware.
+            </p>
+            <span class="app-card__tag">● Apple iPhone</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🔭</div>
+            <h3 class="app-card__title">Autofocus Mechanisms</h3>
+            <p class="app-card__desc">
+              SMA wire actuators drive lens elements in compact smartphone cameras
+              with sub-micron precision. Faster response than piezoelectric systems,
+              silent operation vs. voice coil motors, and no electromagnetic
+              interference with wireless chips.
+            </p>
+            <span class="app-card__tag">● Silent AF</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">⌚</div>
+            <h3 class="app-card__title">Smart Eyewear Frames</h3>
+            <p class="app-card__desc">
+              Superelastic Nitinol frames for glasses can be twisted, sat upon, and
+              fully deformed — then spring back perfectly. No permanent deformation
+              possible within the superelastic regime. Luxottica and others have
+              offered Nitinol frames since the 1990s.
+            </p>
+            <span class="app-card__tag">● Superelastic</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTOR 5: CIVIL ═══ -->
+      <section class="sector sector--civil" id="civil" aria-labelledby="sector-civil-title" data-reveal>
+        <div class="sector__header">
+          <div class="sector__icon" aria-hidden="true">🏗️</div>
+          <div>
+            <p class="sector__number">Sector 05</p>
+            <h2 class="sector__title" id="sector-civil-title">Civil &amp; Structural Engineering</h2>
+            <p class="sector__subtitle">
+              At the macro scale, SMA cables and bars are embedded in bridges,
+              buildings, and joints to provide passive damping during earthquakes
+              and self-centering behaviour after seismic events — returning
+              structures to plumb without human intervention.
+            </p>
+          </div>
+        </div>
+
+        <div class="app-grid app-grid--2col">
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🌉</div>
+            <h3 class="app-card__title">Seismic Dampers</h3>
+            <p class="app-card__desc">
+              SMA braces installed in building frames absorb seismic energy through
+              the superelastic hysteresis loop — converting deformation energy
+              to heat rather than permanent structural damage. Demonstrated on
+              bridges in Italy, Japan, and the USA.
+            </p>
+            <span class="app-card__tag">● Earthquake-resistant</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🏛️</div>
+            <h3 class="app-card__title">Historic Building Retrofits</h3>
+            <p class="app-card__desc">
+              The San Giorgio church in Trignano, Italy (damaged in the 2012 Emilia
+              earthquake) was retrofitted with SMA tendons that allow controlled
+              lateral movement during seismic events while preserving the
+              historic masonry — a technique now spreading across heritage sites.
+            </p>
+            <span class="app-card__tag">● Heritage preservation</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🔗</div>
+            <h3 class="app-card__title">Self-Centering Connections</h3>
+            <p class="app-card__desc">
+              Beam-column connections fitted with SMA bolts deform under earthquake
+              loading but return to their original geometry once the shaking stops.
+              Buildings require minimal post-earthquake repair — a revolutionary
+              shift from conventional "damage-tolerant" design.
+            </p>
+            <span class="app-card__tag">● Post-quake recovery</span>
+          </div>
+
+          <div class="app-card">
+            <div class="app-card__top-bar"></div>
+            <div class="app-card__emoji">🌡️</div>
+            <h3 class="app-card__title">Pipeline Couplings</h3>
+            <p class="app-card__desc">
+              SMA pipe couplings are chilled, slid over pipe joints, then warm up
+              to ambient temperature — contracting to create a grip stronger than
+              welding. Used in aircraft hydraulic lines, oil pipelines, and
+              submarine cable connectors since the 1970s.
+            </p>
+            <span class="app-card__tag">● Cryofit™ joints</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="callout" data-reveal>
+        <span class="callout__icon">🌐</span>
+        <p class="callout__text">
+          <strong>Emerging Frontiers:</strong> Current research is pushing SMAs into
+          4D-printed structures (objects that change shape after printing), soft robotics
+          for deep-sea exploration, drug delivery micro-capsules that open at tumour
+          temperature, and shape-morphing aircraft skins that adapt to weather in real time.
+        </p>
+      </div>
+
+      <!-- NEXT PAGE CTA -->
+      <a href="./history.html" class="next-cta" aria-label="Next: History" data-reveal>
+        <div>
+          <p class="next-cta__label">Next Chapter</p>
+          <h2 class="next-cta__title">History</h2>
+          <p class="next-cta__desc">From a curious observation in 1932 to a $17B industry — trace the 90-year journey of Shape Memory Alloys through the scientists who discovered them.</p>
+        </div>
+        <span class="next-cta__arrow" aria-hidden="true">→</span>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+            <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+              <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                    stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+            </svg>
+            <span class="navbar__logo-text">SMA <span>Forge</span></span>
+          </a>
+          <p>An interactive educational platform exploring Shape Memory Alloys, Nitinol chemistry, and smart materials engineering.</p>
+        </div>
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <div class="footer__nav-group">
+            <h4>Learn</h4>
+            <ul role="list">
+              <li><a href="./concept.html">The Concept</a></li>
+              <li><a href="./phases.html">Phases</a></li>
+              <li><a href="./applications.html">Applications</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-group">
+            <h4>Explore</h4>
+            <ul role="list">
+              <li><a href="./history.html">History</a></li>
+              <li><a href="./sdgs.html">SDGs</a></li>
+              <li><a href="./about.html">About</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 SMA Forge. Built for educational purposes.</span>
+        <span>Shape Memory Alloys — Where Chemistry Meets Engineering.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/navbar.js"></script>
+</body>
+</html>

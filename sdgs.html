@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="How Shape Memory Alloys contribute to the UN Sustainable Development Goals — SDG 3, 9, 11, and 13." />
+  <title>SDGs — SMA Forge</title>
+
+  <script src="./js/theme.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+
+  <style>
+
+    /* ── SDG intro strip ── */
+    .sdg-intro {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8) var(--space-10);
+      margin-bottom: var(--space-10);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-8);
+      align-items: center;
+    }
+
+    .sdg-intro__text {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 65ch;
+    }
+
+    .sdg-intro__text strong { color: var(--text); }
+
+    .sdg-intro__count {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .sdg-intro__number {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .sdg-intro__sublabel {
+      font-size: var(--text-xs);
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: var(--space-1);
+    }
+
+    /* ── SDG section ── */
+    .sdg-section {
+      margin-bottom: var(--space-16);
+    }
+
+    /* ── SDG header ── */
+    .sdg-header {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-6);
+      align-items: start;
+      margin-bottom: var(--space-8);
+      padding-bottom: var(--space-6);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sdg-badge {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-xl);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 2px solid;
+    }
+
+    .sdg-badge__num {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+
+    .sdg-badge__label {
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.2;
+      margin-top: 2px;
+      padding: 0 4px;
+    }
+
+    /* SDG colour themes */
+    .sdg-section--3  .sdg-badge { background: rgba(77,189,76,0.12);  border-color: rgba(77,189,76,0.35);  }
+    .sdg-section--9  .sdg-badge { background: rgba(253,157,36,0.12); border-color: rgba(253,157,36,0.35); }
+    .sdg-section--11 .sdg-badge { background: rgba(253,214,0,0.12);  border-color: rgba(253,214,0,0.35);  }
+    .sdg-section--13 .sdg-badge { background: rgba(63,126,68,0.12);  border-color: rgba(63,126,68,0.35);  }
+
+    .sdg-section--3  .sdg-badge__num,
+    .sdg-section--3  .sdg-badge__label  { color: #4dbd4c; }
+    .sdg-section--9  .sdg-badge__num,
+    .sdg-section--9  .sdg-badge__label  { color: #fd9d24; }
+    .sdg-section--11 .sdg-badge__num,
+    .sdg-section--11 .sdg-badge__label  { color: #c8aa00; }
+    .sdg-section--13 .sdg-badge__num,
+    .sdg-section--13 .sdg-badge__label  { color: #3f7e44; }
+
+    .sdg-header__meta {}
+
+    .sdg-header__goal {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      margin-bottom: var(--space-2);
+    }
+
+    .sdg-section--3  .sdg-header__goal { color: #4dbd4c; }
+    .sdg-section--9  .sdg-header__goal { color: #fd9d24; }
+    .sdg-section--11 .sdg-header__goal { color: #c8aa00; }
+    .sdg-section--13 .sdg-header__goal { color: #3f7e44; }
+
+    .sdg-header__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-3);
+    }
+
+    .sdg-header__desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 65ch;
+    }
+
+    /* ── Connection cards ── */
+    .connection-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+      margin-bottom: var(--space-6);
+    }
+
+    .connection-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      transition: border-color var(--transition), transform var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .connection-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .connection-card__stripe {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .sdg-section--3  .connection-card__stripe { background: linear-gradient(90deg, #4dbd4c, #7ed67d); }
+    .sdg-section--9  .connection-card__stripe { background: linear-gradient(90deg, #fd9d24, #fdc56a); }
+    .sdg-section--11 .connection-card__stripe { background: linear-gradient(90deg, #c8aa00, #e8ce40); }
+    .sdg-section--13 .connection-card__stripe { background: linear-gradient(90deg, #3f7e44, #6aaa6e); }
+
+    .connection-card__emoji {
+      font-size: 1.6rem;
+      margin-bottom: var(--space-3);
+    }
+
+    .connection-card__title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-3);
+    }
+
+    .connection-card__desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── Target alignment box ── */
+    .target-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+      margin-top: var(--space-2);
+    }
+
+    .target-box__label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      color: var(--text-faint);
+      margin-bottom: var(--space-4);
+    }
+
+    .target-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .target-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-4);
+      align-items: start;
+    }
+
+    .target-item__code {
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .sdg-section--3  .target-item__code { background: rgba(77,189,76,0.12);  color: #4dbd4c; border: 1px solid rgba(77,189,76,0.25); }
+    .sdg-section--9  .target-item__code { background: rgba(253,157,36,0.12); color: #fd9d24; border: 1px solid rgba(253,157,36,0.25); }
+    .sdg-section--11 .target-item__code { background: rgba(200,170,0,0.12);  color: #c8aa00; border: 1px solid rgba(200,170,0,0.25); }
+    .sdg-section--13 .target-item__code { background: rgba(63,126,68,0.12);  color: #3f7e44; border: 1px solid rgba(63,126,68,0.25); }
+
+    .target-item__text {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .target-item__text strong { color: var(--text); }
+
+    /* ── Impact meter ── */
+    .impact-meter {
+      margin-top: var(--space-5);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+    }
+
+    .impact-meter__label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      color: var(--text-faint);
+      margin-bottom: var(--space-4);
+    }
+
+    .impact-row {
+      display: grid;
+      grid-template-columns: 180px 1fr auto;
+      gap: var(--space-4);
+      align-items: center;
+      margin-bottom: var(--space-3);
+    }
+
+    .impact-row:last-child { margin-bottom: 0; }
+
+    .impact-row__name {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .impact-row__track {
+      height: 6px;
+      background: var(--surface-2);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .impact-row__fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .sdg-section--3  .impact-row__fill { background: linear-gradient(90deg, #4dbd4c, #7ed67d); }
+    .sdg-section--9  .impact-row__fill { background: linear-gradient(90deg, #fd9d24, #fdc56a); }
+    .sdg-section--11 .impact-row__fill { background: linear-gradient(90deg, #c8aa00, #e8ce40); }
+    .sdg-section--13 .impact-row__fill { background: linear-gradient(90deg, #3f7e44, #6aaa6e); }
+
+    .impact-row__pct {
+      font-size: var(--text-xs);
+      color: var(--text-faint);
+      font-weight: 600;
+      min-width: 32px;
+      text-align: right;
+    }
+
+    /* ── Summary matrix ── */
+    .matrix {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      margin-block: var(--space-10);
+    }
+
+    .matrix__header {
+      padding: var(--space-6) var(--space-8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .matrix__title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+
+    .matrix__subtitle {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      margin-top: var(--space-1);
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .matrix-table th {
+      padding: var(--space-3) var(--space-5);
+      text-align: left;
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+
+    .matrix-table td {
+      padding: var(--space-4) var(--space-5);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .matrix-table tr:last-child td { border-bottom: none; }
+
+    .matrix-table tr:hover td { background: var(--surface-2); }
+
+    .matrix-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .matrix-dot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: var(--space-2);
+      vertical-align: middle;
+    }
+
+    .dot--3  { background: #4dbd4c; }
+    .dot--9  { background: #fd9d24; }
+    .dot--11 { background: #c8aa00; }
+    .dot--13 { background: #3f7e44; }
+
+    /* ── Callout ── */
+    .callout {
+      display: flex; gap: var(--space-4);
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6);
+      margin-top: var(--space-6);
+    }
+    .callout__icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+    .callout__text { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.7; }
+    .callout__text strong { color: var(--text); }
+
+    /* ── Section divider ── */
+    .section-divider {
+      display: flex; align-items: center; gap: var(--space-4);
+      margin-block: var(--space-12);
+    }
+    .section-divider__line { flex: 1; height: 1px; background: var(--border); }
+    .section-divider__label {
+      font-size: var(--text-xs); text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--text-faint); white-space: nowrap;
+    }
+
+    /* ── Next CTA ── */
+    .next-cta {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10) var(--space-12);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: var(--space-8);
+      margin-top: var(--space-16); text-decoration: none;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .next-cta:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .next-cta__label {
+      font-size: var(--text-xs); text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-faint); margin-bottom: var(--space-2);
+    }
+    .next-cta__title {
+      font-family: var(--font-display); font-size: var(--text-2xl);
+      font-weight: 400; letter-spacing: 0.03em; color: var(--text);
+    }
+    .next-cta__desc {
+      font-size: var(--text-sm); color: var(--text-muted);
+      margin-top: var(--space-2); max-width: 45ch;
+    }
+    .next-cta__arrow {
+      font-size: 2rem; color: var(--accent); flex-shrink: 0;
+      transition: transform var(--transition);
+    }
+    .next-cta:hover .next-cta__arrow { transform: translateX(6px); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .sdg-intro { grid-template-columns: 1fr; }
+      .sdg-header { grid-template-columns: auto 1fr; }
+      .connection-grid { grid-template-columns: 1fr; }
+      .impact-row { grid-template-columns: 120px 1fr auto; }
+      .next-cta { flex-direction: column; align-items: flex-start; padding: var(--space-8); }
+    }
+
+    @media (max-width: 480px) {
+      .sdg-header { grid-template-columns: 1fr; }
+      .sdg-badge { width: 60px; height: 60px; }
+      .impact-row { grid-template-columns: 1fr; gap: var(--space-2); }
+      .impact-row__pct { text-align: left; }
+    }
+  </style>
+</head>
+
+<body class="page-enter">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar__inner">
+      <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+        <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+          <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+        </svg>
+        <span class="navbar__logo-text">SMA <span>Forge</span></span>
+      </a>
+      <ul class="navbar__links" role="list">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./concept.html">Concept</a></li>
+        <li><a href="./phases.html">Phases</a></li>
+        <li><a href="./applications.html">Applications</a></li>
+        <li><a href="./history.html">History</a></li>
+        <li><a href="./sdgs.html" aria-current="page">SDGs</a></li>
+        <li><a href="./about.html">About</a></li>
+      </ul>
+      <div class="navbar__controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode"></button>
+        <button class="navbar__hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div class="navbar__mobile" id="mobile-menu">
+    <a href="./index.html">Home</a>
+    <a href="./concept.html">Concept</a>
+    <a href="./phases.html">Phases</a>
+    <a href="./applications.html">Applications</a>
+    <a href="./history.html">History</a>
+    <a href="./sdgs.html">SDGs</a>
+    <a href="./quiz.html">Quiz</a>
+  </div>
+
+  <main id="main">
+
+    <!-- PAGE HERO -->
+    <section class="page-hero" style="background: radial-gradient(ellipse 60% 50% at 60% 40%, rgba(63,126,68,0.07), transparent);">
+      <div class="container--narrow">
+        <p class="page-hero__label hero-animate-1">05 — SDGs</p>
+        <h1 class="page-hero__title hero-animate-2">Smart Materials<br/>for a Better World.</h1>
+        <p class="page-hero__subtitle hero-animate-3">
+          The United Nations' 17 Sustainable Development Goals define humanity's
+          roadmap to 2030. Shape Memory Alloys, through their unique properties
+          and applications, make measurable contributions to four of them —
+          improving health outcomes, enabling resilient infrastructure, and
+          fighting climate change.
+        </p>
+      </div>
+    </section>
+
+    <div class="container--narrow">
+
+      <!-- INTRO STRIP -->
+      <div class="sdg-intro" data-reveal>
+        <p class="sdg-intro__text">
+          The UN Sustainable Development Goals (SDGs), adopted in 2015, are a
+          universal call to action to end poverty, protect the planet, and ensure
+          prosperity for all by 2030. Materials science sits at the intersection
+          of multiple goals — the right material in the right application can
+          save lives, reduce emissions, and build cities that survive disasters.
+          <strong>Nitinol and other SMAs are among the most cross-cutting materials
+          in this regard.</strong> Their medical, structural, and energy applications
+          directly advance four SDGs with documented, quantified impact.
+        </p>
+        <div class="sdg-intro__count">
+          <p class="sdg-intro__number">4</p>
+          <p class="sdg-intro__sublabel">SDGs directly<br/>addressed</p>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════
+           SDG 3 — GOOD HEALTH & WELL-BEING
+      ═══════════════════════════════════ -->
+      <section class="sdg-section sdg-section--3" id="sdg3" aria-labelledby="sdg3-title" data-reveal>
+
+        <div class="sdg-header">
+          <div class="sdg-badge">
+            <span class="sdg-badge__num">3</span>
+            <span class="sdg-badge__label">Good Health</span>
+          </div>
+          <div class="sdg-header__meta">
+            <p class="sdg-header__goal">SDG 3 — Good Health &amp; Well-Being</p>
+            <h2 class="sdg-header__title" id="sdg3-title">Saving Lives Through Smart Implants</h2>
+            <p class="sdg-header__desc">
+              SDG 3 calls for universal health coverage and access to safe, effective
+              medical technologies. Nitinol-based medical devices directly extend this
+              goal — enabling minimally invasive procedures that save lives, reduce
+              recovery times, and lower healthcare costs in both developed and
+              developing health systems.
+            </p>
+          </div>
+        </div>
+
+        <div class="connection-grid">
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🫀</div>
+            <h3 class="connection-card__title">Cardiovascular Disease Intervention</h3>
+            <p class="connection-card__desc">
+              Cardiovascular disease is the world's leading cause of death — 17.9 million
+              deaths per year (WHO, 2023). Nitinol stents used in percutaneous coronary
+              and peripheral vascular interventions have reduced 30-day mortality for
+              carotid stenosis procedures by over 30% compared to open surgery. Each
+              year, 1.5 million+ patients receive Nitinol implants for cardiovascular
+              conditions.
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🧠</div>
+            <h3 class="connection-card__title">Stroke Treatment &amp; Thrombectomy</h3>
+            <p class="connection-card__desc">
+              Nitinol thrombectomy devices (clot retrievers) have transformed ischaemic
+              stroke treatment. Clinical trials show 90-day functional independence
+              rates improving from 26% (medical management alone) to 46% with
+              mechanical thrombectomy using SMA devices. Stroke is the second largest
+              cause of disability globally — these devices directly address SDG
+              target 3.4 (reduce premature non-communicable disease mortality).
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🦷</div>
+            <h3 class="connection-card__title">Accessible Orthodontic Care</h3>
+            <p class="connection-card__desc">
+              Nitinol archwires reduce the number of orthodontic appointments required
+              by 30–40% compared to steel wire treatment — a critical advantage in
+              regions with sparse specialist coverage. Lower-cost treatment protocols
+              become viable, contributing to SDG 3.8 (universal health coverage) by
+              extending access to oral health interventions across lower-income settings.
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🔬</div>
+            <h3 class="connection-card__title">Minimally Invasive Surgery</h3>
+            <p class="connection-card__desc">
+              SMA guidewires, retrieval devices, and snares enable procedures that would
+              previously require open surgery — reducing hospital stays from 7–10 days
+              to 24 hours, cutting infection risk by up to 60%, and dramatically lowering
+              procedure costs. This directly supports SDG 3.b (access to medicines and
+              technologies in developing countries) by making complex interventions viable
+              at lower resource levels.
+            </p>
+          </div>
+        </div>
+
+        <div class="target-box">
+          <p class="target-box__label">Relevant SDG 3 Targets</p>
+          <div class="target-list">
+            <div class="target-item">
+              <span class="target-item__code">3.4</span>
+              <p class="target-item__text"><strong>Reduce premature mortality from non-communicable diseases by one third.</strong> Nitinol stents and thrombectomy devices directly reduce cardiovascular and stroke mortality.</p>
+            </div>
+            <div class="target-item">
+              <span class="target-item__code">3.8</span>
+              <p class="target-item__text"><strong>Achieve universal health coverage.</strong> Lower-cost, less-invasive SMA-based procedures extend specialist-level care to under-resourced settings.</p>
+            </div>
+            <div class="target-item">
+              <span class="target-item__code">3.b</span>
+              <p class="target-item__text"><strong>Support research and development of medicines and vaccines.</strong> Nitinol drug-eluting stents combine mechanical scaffolding with pharmaceutical delivery.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="impact-meter">
+          <p class="impact-meter__label">SMA Impact Strength — SDG 3 Sub-areas</p>
+          <div class="impact-row">
+            <span class="impact-row__name">Cardiovascular devices</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="92"></div></div>
+            <span class="impact-row__pct">92%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Stroke treatment</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="85"></div></div>
+            <span class="impact-row__pct">85%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Orthodontics</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="70"></div></div>
+            <span class="impact-row__pct">70%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">MIS procedures</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="78"></div></div>
+            <span class="impact-row__pct">78%</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ═══════════════════════════════════
+           SDG 9 — INDUSTRY, INNOVATION & INFRASTRUCTURE
+      ═══════════════════════════════════ -->
+      <section class="sdg-section sdg-section--9" id="sdg9" aria-labelledby="sdg9-title" data-reveal>
+
+        <div class="sdg-header">
+          <div class="sdg-badge">
+            <span class="sdg-badge__num">9</span>
+            <span class="sdg-badge__label">Innovation</span>
+          </div>
+          <div class="sdg-header__meta">
+            <p class="sdg-header__goal">SDG 9 — Industry, Innovation &amp; Infrastructure</p>
+            <h2 class="sdg-header__title" id="sdg9-title">Engineering the Future with Smart Materials</h2>
+            <p class="sdg-header__desc">
+              SDG 9 calls for resilient infrastructure, inclusive industrialisation,
+              and innovation. SMAs are enabling next-generation infrastructure that
+              is lighter, stronger, and self-adaptive — from morphing aircraft wings
+              to smart pipelines to seismically resilient bridges.
+            </p>
+          </div>
+        </div>
+
+        <div class="connection-grid">
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">✈️</div>
+            <h3 class="connection-card__title">Aerospace Innovation</h3>
+            <p class="connection-card__desc">
+              Boeing 737 MAX engine chevrons using Nitinol actuation reduce aircraft
+              noise by 3 dB during takeoff — exceeding ICAO Stage 4 noise standards —
+              while adding zero mechanical complexity. NASA's morphing wing research
+              programmes estimate 5–8% fuel savings from SMA-enabled adaptive
+              aerofoils. This directly supports SDG 9.4 (upgrade infrastructure for
+              sustainability) by reducing aviation's environmental footprint.
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🏗️</div>
+            <h3 class="connection-card__title">Resilient Infrastructure</h3>
+            <p class="connection-card__desc">
+              SMA tendons and braces retrofitted into bridges and buildings provide
+              passive seismic damping without maintenance. A 2019 study found SMA-braced
+              frames reduced peak inter-storey drift by 45% compared to conventional
+              steel bracing — with the additional benefit of self-centering after
+              an earthquake. Contributes to SDG 9.1 (develop quality, reliable
+              infrastructure).
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🤖</div>
+            <h3 class="connection-card__title">Advanced Manufacturing</h3>
+            <p class="connection-card__desc">
+              4D printing of SMA components — objects that change shape after
+              manufacturing — is enabling entirely new product categories: self-assembling
+              structures, reconfigurable tools, and adaptive packaging. The global SMA
+              market's 13% CAGR reflects accelerating industrial adoption, contributing
+              to SDG 9.2 (promote inclusive and sustainable industrialisation).
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🔗</div>
+            <h3 class="connection-card__title">Pipeline &amp; Connection Technology</h3>
+            <p class="connection-card__desc">
+              Cryofit™ SMA pipe couplings have operated for 50+ years in military
+              and commercial aircraft hydraulic systems with zero reported failures —
+              a reliability record no conventional coupling technology matches. Extending
+              this to oil and gas pipelines reduces maintenance costs and leak risk,
+              supporting SDG 9.1's emphasis on reliable, sustainable infrastructure.
+            </p>
+          </div>
+        </div>
+
+        <div class="target-box">
+          <p class="target-box__label">Relevant SDG 9 Targets</p>
+          <div class="target-list">
+            <div class="target-item">
+              <span class="target-item__code">9.1</span>
+              <p class="target-item__text"><strong>Develop reliable, sustainable infrastructure.</strong> SMA seismic dampers and pipe couplings create infrastructure that is self-maintaining and failure-resistant.</p>
+            </div>
+            <div class="target-item">
+              <span class="target-item__code">9.4</span>
+              <p class="target-item__text"><strong>Upgrade infrastructure for sustainability.</strong> SMA-enabled aircraft noise reduction and fuel efficiency directly reduce aviation's environmental impact.</p>
+            </div>
+            <div class="target-item">
+              <span class="target-item__code">9.5</span>
+              <p class="target-item__text"><strong>Enhance scientific research and technological capabilities.</strong> The $17.65B SMA industry funds ongoing research into new alloy compositions, training protocols, and applications.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="impact-meter">
+          <p class="impact-meter__label">SMA Impact Strength — SDG 9 Sub-areas</p>
+          <div class="impact-row">
+            <span class="impact-row__name">Aerospace systems</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="80"></div></div>
+            <span class="impact-row__pct">80%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Seismic infrastructure</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="72"></div></div>
+            <span class="impact-row__pct">72%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">4D manufacturing</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="55"></div></div>
+            <span class="impact-row__pct">55%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Pipeline reliability</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="68"></div></div>
+            <span class="impact-row__pct">68%</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ═══════════════════════════════════
+           SDG 11 — SUSTAINABLE CITIES
+      ═══════════════════════════════════ -->
+      <section class="sdg-section sdg-section--11" id="sdg11" aria-labelledby="sdg11-title" data-reveal>
+
+        <div class="sdg-header">
+          <div class="sdg-badge">
+            <span class="sdg-badge__num">11</span>
+            <span class="sdg-badge__label">Sustainable Cities</span>
+          </div>
+          <div class="sdg-header__meta">
+            <p class="sdg-header__goal">SDG 11 — Sustainable Cities &amp; Communities</p>
+            <h2 class="sdg-header__title" id="sdg11-title">Cities That Bend But Don't Break</h2>
+            <p class="sdg-header__desc">
+              SDG 11 calls for cities that are safe, resilient, and sustainable.
+              With 80% of the world's population projected to live in urban areas
+              by 2050, and seismic risk affecting 130+ cities worldwide, SMA-based
+              structural solutions offer a paradigm shift in how we protect
+              the built environment.
+            </p>
+          </div>
+        </div>
+
+        <div class="connection-grid">
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🌉</div>
+            <h3 class="connection-card__title">Earthquake-Resilient Buildings</h3>
+            <p class="connection-card__desc">
+              SMA braces allow buildings to deform during an earthquake — absorbing
+              energy through the superelastic hysteresis loop — then return to their
+              original geometry without human intervention. Post-earthquake inspections
+              of SMA-braced structures in Japan and Italy have found zero residual
+              drift after major events, versus 1–3% permanent deformation in
+              conventional steel-braced frames.
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🏛️</div>
+            <h3 class="connection-card__title">Heritage Preservation</h3>
+            <p class="connection-card__desc">
+              Over 500 historic buildings in Italy, Turkey, and Greece have been
+              retrofitted with SMA tendons since 2010. The technique preserves
+              original masonry while providing seismic protection impossible with
+              conventional steel reinforcement — which would require destroying
+              historic fabric. Directly supports SDG 11.4 (protect cultural and
+              natural heritage).
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🚇</div>
+            <h3 class="connection-card__title">Transport Infrastructure</h3>
+            <p class="connection-card__desc">
+              SMA dampers installed in elevated rail viaducts and metro systems in
+              seismic zones (Tokyo, Los Angeles, Istanbul) allow service resumption
+              hours after major earthquakes — versus weeks for conventionally designed
+              structures. Uninterrupted urban transport is critical for post-disaster
+              emergency response, supporting SDG 11.b (integrated policies for
+              disaster risk reduction).
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🏘️</div>
+            <h3 class="connection-card__title">Affordable Housing Resilience</h3>
+            <p class="connection-card__desc">
+              Research programs in Chile, Nepal, and Peru are developing low-cost
+              SMA connection systems for non-engineered masonry housing — the building
+              type responsible for 80% of earthquake fatalities. Passive SMA-reinforced
+              connections that require no maintenance or power are uniquely suited to
+              informal settlement retrofitting, targeting SDG 11.5 (disaster risk
+              reduction for the urban poor).
+            </p>
+          </div>
+        </div>
+
+        <div class="target-box">
+          <p class="target-box__label">Relevant SDG 11 Targets</p>
+          <div class="target-list">
+            <div class="target-item">
+              <span class="target-item__code">11.4</span>
+              <p class="target-item__text"><strong>Protect cultural and natural heritage.</strong> SMA retrofits preserve historic buildings while providing modern seismic protection.</p>
+            </div>
+            <div class="target-item">
+              <span class="target-item__code">11.5</span>
+              <p class="target-item__text"><strong>Reduce disaster deaths and economic losses.</strong> Self-centering SMA structures dramatically reduce post-earthquake repair costs and displacement of residents.</p>
+            </div>
+            <div class="target-item">
+              <span class="target-item__code">11.b</span>
+              <p class="target-item__text"><strong>Implement integrated disaster risk reduction policies.</strong> Passive SMA dampers require no maintenance or power — ideal for resilience planning in resource-constrained cities.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="impact-meter">
+          <p class="impact-meter__label">SMA Impact Strength — SDG 11 Sub-areas</p>
+          <div class="impact-row">
+            <span class="impact-row__name">Seismic resilience</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="88"></div></div>
+            <span class="impact-row__pct">88%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Heritage preservation</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="82"></div></div>
+            <span class="impact-row__pct">82%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Transport continuity</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="65"></div></div>
+            <span class="impact-row__pct">65%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Affordable housing</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="42"></div></div>
+            <span class="impact-row__pct">42%</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ═══════════════════════════════════
+           SDG 13 — CLIMATE ACTION
+      ═══════════════════════════════════ -->
+      <section class="sdg-section sdg-section--13" id="sdg13" aria-labelledby="sdg13-title" data-reveal>
+
+        <div class="sdg-header">
+          <div class="sdg-badge">
+            <span class="sdg-badge__num">13</span>
+            <span class="sdg-badge__label">Climate Action</span>
+          </div>
+          <div class="sdg-header__meta">
+            <p class="sdg-header__goal">SDG 13 — Climate Action</p>
+            <h2 class="sdg-header__title" id="sdg13-title">Low-Carbon Actuation for a Warming World</h2>
+            <p class="sdg-header__desc">
+              SDG 13 demands urgent action to combat climate change. SMAs contribute
+              through passive actuation (zero electrical power required), enabling
+              fuel-efficient aerospace systems, replacing energy-intensive hydraulics,
+              and enabling renewable energy infrastructure that must operate in
+              extreme conditions.
+            </p>
+          </div>
+        </div>
+
+        <div class="connection-grid">
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">⚡</div>
+            <h3 class="connection-card__title">Passive Actuation — Zero Power</h3>
+            <p class="connection-card__desc">
+              SMA actuators driven by ambient temperature change — such as thermal
+              control valves in buildings, HVAC dampers, and greenhouse ventilation
+              systems — consume zero electrical energy. A single SMA-actuated
+              building ventilation damper can replace a 50W electric motor, operating
+              continuously without power over its 10+ year lifetime. At scale across
+              commercial buildings, this represents measurable carbon reduction.
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">✈️</div>
+            <h3 class="connection-card__title">Aviation Emissions Reduction</h3>
+            <p class="connection-card__desc">
+              Aviation accounts for 2.5% of global CO₂ emissions. SMA-enabled
+              morphing wings and adaptive engine components could reduce per-flight
+              fuel consumption by 5–8% — equivalent to removing 35 million tonnes
+              of CO₂ per year at current traffic levels. Boeing and Airbus both have
+              active SMA integration programmes targeting their 2030 emissions
+              commitments.
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🌊</div>
+            <h3 class="connection-card__title">Offshore Wind &amp; Tidal Energy</h3>
+            <p class="connection-card__desc">
+              SMA components in offshore wind turbine blade pitch systems and tidal
+              generator actuators function reliably in corrosive marine environments
+              where conventional actuators require frequent replacement. Reducing
+              offshore maintenance frequency by 40% — documented in North Sea pilot
+              programs — directly reduces the carbon cost of renewable energy
+              infrastructure.
+            </p>
+          </div>
+          <div class="connection-card">
+            <div class="connection-card__stripe"></div>
+            <div class="connection-card__emoji">🔋</div>
+            <h3 class="connection-card__title">SMA Thermal Energy Harvesting</h3>
+            <p class="connection-card__desc">
+              Emerging research exploits the latent heat of SMA phase transformation
+              to convert low-grade waste heat (50–150°C — from industrial processes,
+              server farms, vehicle exhaust) into mechanical work or electricity. SMA
+              heat engines with 3–8% conversion efficiency are being tested as
+              distributed waste-heat recovery systems, directly targeting SDG 13.2
+              (integrate climate change into national policies).
+            </p>
+          </div>
+        </div>
+
+        <div class="target-box">
+          <p class="target-box__label">Relevant SDG 13 Targets</p>
+          <div class="target-list">
+            <div class="target-item">
+              <span class="target-item__code">13.2</span>
+              <p class="target-item__text"><strong>Integrate climate change measures into policies and planning.</strong> Passive SMA actuators and thermal energy harvesters support decarbonisation strategies across industry, transport, and buildings.</p>
+            </div>
+            <div class="target-item">
+              <span class="target-item__code">13.3</span>
+              <p class="target-item__text"><strong>Improve education and awareness on climate change mitigation.</strong> SMA research builds cross-disciplinary climate engineering capacity in materials science communities worldwide.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="impact-meter">
+          <p class="impact-meter__label">SMA Impact Strength — SDG 13 Sub-areas</p>
+          <div class="impact-row">
+            <span class="impact-row__name">Aviation fuel reduction</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="75"></div></div>
+            <span class="impact-row__pct">75%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Passive zero-power actuation</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="83"></div></div>
+            <span class="impact-row__pct">83%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Renewable energy systems</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="60"></div></div>
+            <span class="impact-row__pct">60%</span>
+          </div>
+          <div class="impact-row">
+            <span class="impact-row__name">Waste heat harvesting</span>
+            <div class="impact-row__track"><div class="impact-row__fill" data-width="38"></div></div>
+            <span class="impact-row__pct">38%</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- SUMMARY MATRIX -->
+      <div class="section-divider" data-reveal>
+        <div class="section-divider__line"></div>
+        <span class="section-divider__label">Summary Matrix</span>
+        <div class="section-divider__line"></div>
+      </div>
+
+      <div class="matrix" data-reveal>
+        <div class="matrix__header">
+          <h2 class="matrix__title">SMA × SDG Alignment at a Glance</h2>
+          <p class="matrix__subtitle">How each SMA application category maps to SDG targets</p>
+        </div>
+        <table class="matrix-table" aria-label="SMA to SDG alignment matrix">
+          <thead>
+            <tr>
+              <th>SMA Application</th>
+              <th>Primary SDG</th>
+              <th>Specific Target</th>
+              <th>Mechanism of Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cardiovascular stents</td>
+              <td><span class="matrix-dot dot--3"></span>SDG 3</td>
+              <td>3.4 — Reduce NCD mortality</td>
+              <td>Self-expanding at body temp; 1.5M procedures/year</td>
+            </tr>
+            <tr>
+              <td>Orthodontic archwires</td>
+              <td><span class="matrix-dot dot--3"></span>SDG 3</td>
+              <td>3.8 — Universal health coverage</td>
+              <td>Fewer visits → more accessible treatment</td>
+            </tr>
+            <tr>
+              <td>Seismic building braces</td>
+              <td><span class="matrix-dot dot--11"></span>SDG 11</td>
+              <td>11.5 — Reduce disaster losses</td>
+              <td>Self-centering; zero residual drift post-quake</td>
+            </tr>
+            <tr>
+              <td>Historic building retrofits</td>
+              <td><span class="matrix-dot dot--11"></span>SDG 11</td>
+              <td>11.4 — Protect heritage</td>
+              <td>Non-invasive SMA tendons; 500+ buildings retrofitted</td>
+            </tr>
+            <tr>
+              <td>Morphing aircraft wings</td>
+              <td><span class="matrix-dot dot--9"></span>SDG 9</td>
+              <td>9.4 — Sustainable infrastructure</td>
+              <td>5–8% fuel reduction; noise below ICAO Stage 4</td>
+            </tr>
+            <tr>
+              <td>Aerospace actuators</td>
+              <td><span class="matrix-dot dot--13"></span>SDG 13</td>
+              <td>13.2 — Climate change integration</td>
+              <td>Replaces hydraulics; reduces maintenance emissions</td>
+            </tr>
+            <tr>
+              <td>Passive thermal valves</td>
+              <td><span class="matrix-dot dot--13"></span>SDG 13</td>
+              <td>13.2 — Climate change integration</td>
+              <td>Zero electrical power; replaces 50W motors at scale</td>
+            </tr>
+            <tr>
+              <td>4D printed components</td>
+              <td><span class="matrix-dot dot--9"></span>SDG 9</td>
+              <td>9.5 — Scientific research</td>
+              <td>New manufacturing paradigm; programmable structures</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout" data-reveal>
+        <span class="callout__icon">🌍</span>
+        <p class="callout__text">
+          <strong>Beyond 2030:</strong> As climate change increases the frequency of extreme weather
+          events and seismic activity compounds with subsidence in coastal cities, the demand
+          for passive, maintenance-free, self-adaptive structural materials will only grow.
+          Shape Memory Alloys — already proven at scale — are among the best-positioned
+          materials to contribute to the SDG successor framework beyond 2030.
+        </p>
+      </div>
+
+      <!-- NEXT PAGE CTA -->
+      <a href="./quiz.html" class="next-cta" aria-label="Next: Quiz" data-reveal>
+        <div>
+          <p class="next-cta__label">Final Chapter</p>
+          <h2 class="next-cta__title">Test Your Knowledge</h2>
+          <p class="next-cta__desc">Think you know your Martensite from your Austenite? Put your SMA knowledge to the test with 10 questions across concept, phases, applications, and history.</p>
+        </div>
+        <span class="next-cta__arrow" aria-hidden="true">→</span>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+            <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+              <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                    stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+            </svg>
+            <span class="navbar__logo-text">SMA <span>Forge</span></span>
+          </a>
+          <p>An interactive educational platform exploring Shape Memory Alloys, Nitinol chemistry, and smart materials engineering.</p>
+        </div>
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <div class="footer__nav-group">
+            <h4>Learn</h4>
+            <ul role="list">
+              <li><a href="./concept.html">The Concept</a></li>
+              <li><a href="./phases.html">Phases</a></li>
+              <li><a href="./applications.html">Applications</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-group">
+            <h4>Explore</h4>
+            <ul role="list">
+              <li><a href="./history.html">History</a></li>
+              <li><a href="./sdgs.html">SDGs</a></li>
+              <li><a href="./about.html">About</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 SMA Forge. Built for educational purposes.</span>
+        <span>Shape Memory Alloys — Where Chemistry Meets Engineering.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/navbar.js"></script>
+
+  <script>
+    /* Animate impact meter bars when they scroll into view */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.impact-row__fill').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.impact-meter').forEach(meter => observer.observe(meter));
+  </script>
+</body>
+</html>

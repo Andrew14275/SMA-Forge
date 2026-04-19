@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore the two crystal phases of Shape Memory Alloys — Martensite and Austenite — and how temperature drives transformation." />
+  <title>Phases — SMA Forge</title>
+
+  <script src="./js/theme.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+
+  <style>
+
+    /* ── Phase badge ── */
+    .phase-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-4);
+    }
+    .phase-badge--martensite {
+      background: rgba(79,152,163,0.12);
+      color: var(--teal);
+      border: 1px solid rgba(79,152,163,0.25);
+    }
+    .phase-badge--austenite {
+      background: rgba(232,100,58,0.12);
+      color: var(--accent);
+      border: 1px solid rgba(232,100,58,0.25);
+    }
+
+    /* ── Phase hero blocks ── */
+    .phase-blocks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      margin-block: var(--space-10);
+    }
+
+    .phase-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .phase-block:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-hover);
+    }
+
+    .phase-block__glow {
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      top: -100px; right: -80px;
+      pointer-events: none;
+      opacity: 0.07;
+    }
+    .phase-block--martensite .phase-block__glow { background: var(--teal); }
+    .phase-block--austenite  .phase-block__glow { background: var(--accent); }
+
+    .phase-block__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-2);
+    }
+    .phase-block--martensite .phase-block__title { color: var(--teal); }
+    .phase-block--austenite  .phase-block__title { color: var(--accent); }
+
+    .phase-block__temp {
+      font-size: var(--text-sm);
+      color: var(--text-faint);
+      margin-bottom: var(--space-5);
+      font-weight: 500;
+    }
+
+    .phase-block__desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: var(--space-6);
+    }
+
+    .phase-block__props {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .prop-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--border);
+      font-size: var(--text-sm);
+    }
+    .prop-row:last-child { border-bottom: none; }
+
+    .prop-row__key {
+      color: var(--text-faint);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    .prop-row__val {
+      color: var(--text);
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* ── Lattice visualiser ── */
+    .lattice-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8) var(--space-10);
+      margin-block: var(--space-10);
+    }
+
+    .lattice-section__label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-faint);
+      margin-bottom: var(--space-6);
+    }
+
+    .lattice-wrapper {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--space-6);
+      align-items: center;
+    }
+
+    .lattice-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      text-align: center;
+    }
+
+    .lattice-title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-4);
+    }
+    .lattice-box--m .lattice-title { color: var(--teal); }
+    .lattice-box--a .lattice-title { color: var(--accent); }
+
+    /* CSS lattice atoms */
+    .atom-grid {
+      display: grid;
+      justify-content: center;
+      gap: 6px;
+      margin: 0 auto var(--space-4);
+    }
+    .atom-grid--m {
+      grid-template-columns: repeat(4, 18px);
+      /* Skewed to show monoclinic look */
+      transform: skewX(-12deg);
+    }
+    .atom-grid--a {
+      grid-template-columns: repeat(4, 18px);
+    }
+
+    .atom {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid;
+    }
+    .atom--ni { background: rgba(79,152,163,0.25); border-color: var(--teal); }
+    .atom--ti { background: rgba(232,100,58,0.2);  border-color: var(--accent); }
+
+    .lattice-note {
+      font-size: var(--text-xs);
+      color: var(--text-faint);
+      line-height: 1.6;
+    }
+
+    /* Arrow between lattices */
+    .lattice-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .lattice-arrow__line {
+      width: 2px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--teal), var(--accent));
+      border-radius: 1px;
+    }
+
+    .lattice-arrow__label {
+      font-size: var(--text-xs);
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    /* ── Temperature curve ── */
+    .temp-curve {
+      margin-block: var(--space-10);
+    }
+
+    .temp-curve__header {
+      margin-bottom: var(--space-6);
+    }
+
+    .temp-curve__title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-2);
+    }
+
+    .temp-curve__desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      max-width: 65ch;
+      line-height: 1.7;
+    }
+
+    /* SVG temperature diagram */
+    .curve-svg-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+      overflow: hidden;
+    }
+
+    .curve-svg-wrapper svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Transformation steps ── */
+    .transform-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-block: var(--space-10);
+      position: relative;
+    }
+
+    .transform-steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: calc(12.5% + 20px);
+      right: calc(12.5% + 20px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--accent), var(--teal));
+      z-index: 0;
+    }
+
+    .transform-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .transform-step__circle {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-4);
+      border: 2px solid var(--border);
+      background: var(--surface);
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .transform-step:hover .transform-step__circle {
+      transform: scale(1.08);
+    }
+
+    .transform-step:nth-child(1) .transform-step__circle,
+    .transform-step:nth-child(4) .transform-step__circle { color: var(--teal); border-color: rgba(79,152,163,0.4); }
+    .transform-step:nth-child(2) .transform-step__circle,
+    .transform-step:nth-child(3) .transform-step__circle { color: var(--accent); border-color: rgba(232,100,58,0.4); }
+
+    .transform-step__name {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-1);
+    }
+
+    .transform-step__temp {
+      font-size: var(--text-xs);
+      color: var(--text-faint);
+      margin-bottom: var(--space-2);
+      font-weight: 600;
+    }
+
+    .transform-step__desc {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 15ch;
+    }
+
+    /* ── Key temperatures table ── */
+    .temps-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+      margin-top: var(--space-6);
+    }
+
+    .temps-table th {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 400;
+      padding: var(--space-3) var(--space-5);
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .temps-table td {
+      padding: var(--space-3) var(--space-5);
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: middle;
+    }
+
+    .temps-table td:first-child {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .temps-table tr:nth-child(1) td:first-child { color: var(--teal); }
+    .temps-table tr:nth-child(2) td:first-child { color: #7dc5cc; }
+    .temps-table tr:nth-child(3) td:first-child { color: #e07a50; }
+    .temps-table tr:nth-child(4) td:first-child { color: var(--accent); }
+    .temps-table tr:last-child td { border-bottom: none; }
+
+    .temps-table td strong { color: var(--text); }
+
+    /* ── Callout ── */
+    .callout {
+      display: flex;
+      gap: var(--space-4);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+      margin-top: var(--space-6);
+    }
+    .callout__icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+    .callout__text { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.7; }
+    .callout__text strong { color: var(--text); }
+
+    /* ── Section divider ── */
+    .section-divider {
+      display: flex; align-items: center; gap: var(--space-4);
+      margin-block: var(--space-12);
+    }
+    .section-divider__line { flex: 1; height: 1px; background: var(--border); }
+    .section-divider__label {
+      font-size: var(--text-xs); text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--text-faint); white-space: nowrap;
+    }
+
+    /* ── Next CTA ── */
+    .next-cta {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10) var(--space-12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-8);
+      margin-top: var(--space-16);
+      text-decoration: none;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .next-cta:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .next-cta__label {
+      font-size: var(--text-xs); text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-faint); margin-bottom: var(--space-2);
+    }
+    .next-cta__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl); font-weight: 400; letter-spacing: 0.03em; color: var(--text);
+    }
+    .next-cta__desc {
+      font-size: var(--text-sm); color: var(--text-muted);
+      margin-top: var(--space-2); max-width: 45ch;
+    }
+    .next-cta__arrow {
+      font-size: 2rem; color: var(--accent); flex-shrink: 0;
+      transition: transform var(--transition);
+    }
+    .next-cta:hover .next-cta__arrow { transform: translateX(6px); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .phase-blocks { grid-template-columns: 1fr; }
+      .lattice-wrapper { grid-template-columns: 1fr; }
+      .lattice-arrow { flex-direction: row; }
+      .lattice-arrow__line { width: 60px; height: 2px; }
+      .lattice-arrow__label { writing-mode: horizontal-tb; }
+      .transform-steps { grid-template-columns: 1fr 1fr; }
+      .transform-steps::before { display: none; }
+      .next-cta { flex-direction: column; align-items: flex-start; padding: var(--space-8); }
+    }
+
+    @media (max-width: 480px) {
+      .transform-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body class="page-enter">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar__inner">
+      <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+        <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+          <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+        </svg>
+        <span class="navbar__logo-text">SMA <span>Forge</span></span>
+      </a>
+      <ul class="navbar__links" role="list">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./concept.html">Concept</a></li>
+        <li><a href="./phases.html" aria-current="page">Phases</a></li>
+        <li><a href="./applications.html">Applications</a></li>
+        <li><a href="./history.html">History</a></li>
+        <li><a href="./sdgs.html">SDGs</a></li>
+        <li><a href="./quiz.html">Quiz</a></li>
+      </ul>
+      <div class="navbar__controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode"></button>
+        <button class="navbar__hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div class="navbar__mobile" id="mobile-menu">
+    <a href="./index.html">Home</a>
+    <a href="./concept.html">Concept</a>
+    <a href="./phases.html">Phases</a>
+    <a href="./applications.html">Applications</a>
+    <a href="./history.html">History</a>
+    <a href="./sdgs.html">SDGs</a>
+    <a href="./quiz.html">Quiz</a>
+  </div>
+
+  <main id="main">
+
+    <!-- PAGE HERO -->
+    <section class="page-hero" style="background: radial-gradient(ellipse 70% 50% at 20% 50%, rgba(79,152,163,0.06), transparent);">
+      <div class="container--narrow">
+        <p class="page-hero__label hero-animate-1">02 — Phases</p>
+        <h1 class="page-hero__title hero-animate-2">Two Phases.<br/>One Memory.</h1>
+        <p class="page-hero__subtitle hero-animate-3">
+          Shape Memory Alloys exist in two distinct crystal structures —
+          <strong>Martensite</strong> at low temperatures and <strong>Austenite</strong>
+          at high temperatures. The reversible switch between them is what gives SMAs
+          their extraordinary properties.
+        </p>
+      </div>
+    </section>
+
+    <div class="container--narrow">
+
+      <!-- PHASE BLOCKS -->
+      <div data-reveal>
+        <!-- Martensite -->
+        <div class="phase-block phase-block--martensite">
+          <div class="phase-block__glow"></div>
+          <div class="phase-badge phase-badge--martensite">● Martensite</div>
+          <h2 class="phase-block__title">Martensite</h2>
+          <p class="phase-block__temp">Low Temperature Phase — Below Mf</p>
+          <p class="phase-block__desc">
+            The low-temperature phase, characterised by a monoclinic or
+            orthorhombic crystal lattice. Atoms are arranged in a twinned
+            structure that allows easy deformation. When stress is applied,
+            twins re-orient — the alloy bends without breaking. Remove the
+            stress: it stays deformed, but remembers where it came from.
+          </p>
+          <div class="phase-block__props">
+            <div class="prop-row">
+              <span class="prop-row__key">Crystal Structure</span>
+              <span class="prop-row__val">Monoclinic / Twinned</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-row__key">Stiffness</span>
+              <span class="prop-row__val">Low (~28–41 GPa)</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-row__key">Deformability</span>
+              <span class="prop-row__val">High — up to 8% strain</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-row__key">Yield Strength</span>
+              <span class="prop-row__val">~70–140 MPa</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-row__key">Appearance</span>
+              <span class="prop-row__val">Soft, malleable</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Austenite -->
+        <div class="phase-block phase-block--austenite">
+          <div class="phase-block__glow"></div>
+          <div class="phase-badge phase-badge--austenite">● Austenite</div>
+          <h2 class="phase-block__title">Austenite</h2>
+          <p class="phase-block__temp">High Temperature Phase — Above Af</p>
+          <p class="phase-block__desc">
+            The high-temperature phase, featuring a highly ordered cubic crystal
+            lattice (B2 structure). Atoms snap back into their original,
+            symmetrical positions. This is the "memorised" shape — the
+            configuration the alloy was trained to return to. The structure
+            is stronger and stiffer than martensite.
+          </p>
+          <div class="phase-block__props">
+            <div class="prop-row">
+              <span class="prop-row__key">Crystal Structure</span>
+              <span class="prop-row__val">Cubic (B2 ordered)</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-row__key">Stiffness</span>
+              <span class="prop-row__val">High (~83 GPa)</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-row__key">Deformability</span>
+              <span class="prop-row__val">Low — elastic only</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-row__key">Yield Strength</span>
+              <span class="prop-row__val">~195–690 MPa</span>
+            </div>
+            <div class="prop-row">
+              <span class="prop-row__key">Appearance</span>
+              <span class="prop-row__val">Stiff, springy</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION DIVIDER -->
+      <div data-reveal>
+        <div class="section-divider__line"></div>
+        <span class="section-divider__label">Crystal Lattice</span>
+        <div class="section-divider__line"></div>
+      </div>
+
+      <!-- LATTICE VISUALISER -->
+      <div data-reveal>
+        <p class="lattice-section__label">Atomic structure — simplified representation</p>
+        <div class="lattice-wrapper">
+
+          <!-- Martensite lattice -->
+          <div class="lattice-box lattice-box--m">
+            <h3 class="lattice-title">Martensite</h3>
+            <div class="atom-grid atom-grid--m">
+              <div class="atom atom--ni"></div><div class="atom atom--ti"></div><div class="atom atom--ni"></div><div class="atom atom--ti"></div>
+              <div class="atom atom--ti"></div><div class="atom atom--ni"></div><div class="atom atom--ti"></div><div class="atom atom--ni"></div>
+              <div class="atom atom--ni"></div><div class="atom atom--ti"></div><div class="atom atom--ni"></div><div class="atom atom--ti"></div>
+              <div class="atom atom--ti"></div><div class="atom atom--ni"></div><div class="atom atom--ti"></div><div class="atom atom--ni"></div>
+            </div>
+            <p class="lattice-note">Twinned monoclinic structure.<br/>Planes can slide under stress.</p>
+          </div>
+
+          <!-- Arrow -->
+          <div class="lattice-arrow">
+            <div class="lattice-arrow__line"></div>
+            <span class="lattice-arrow__label">Heat / Cool</span>
+            <div class="lattice-arrow__line"></div>
+          </div>
+
+          <!-- Austenite lattice -->
+          <div class="lattice-box lattice-box--a">
+            <h3 class="lattice-title">Austenite</h3>
+            <div class="atom-grid atom-grid--a">
+              <div class="atom atom--ni"></div><div class="atom atom--ti"></div><div class="atom atom--ni"></div><div class="atom atom--ti"></div>
+              <div class="atom atom--ti"></div><div class="atom atom--ni"></div><div class="atom atom--ti"></div><div class="atom atom--ni"></div>
+              <div class="atom atom--ni"></div><div class="atom atom--ti"></div><div class="atom atom--ni"></div><div class="atom atom--ti"></div>
+              <div class="atom atom--ti"></div><div class="atom atom--ni"></div><div class="atom atom--ti"></div><div class="atom atom--ni"></div>
+            </div>
+            <p class="lattice-note">Ordered cubic (B2) structure.<br/>Symmetrical, locked in place.</p>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div style="display:flex; gap: var(--space-6); justify-content: center; margin-top: var(--space-6);">
+          <div style="display:flex; align-items:center; gap:var(--space-2); font-size:var(--text-xs); color:var(--text-muted);">
+            <div class="atom atom--ni" style="width:14px;height:14px;"></div> Nickel (Ni)
+          </div>
+          <div style="display:flex; align-items:center; gap:var(--space-2); font-size:var(--text-xs); color:var(--text-muted);">
+            <div class="atom atom--ti" style="width:14px;height:14px;"></div> Titanium (Ti)
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION DIVIDER -->
+      <div data-reveal>
+        <div class="section-divider__line"></div>
+        <span class="section-divider__label">Transformation Temperatures</span>
+        <div class="section-divider__line"></div>
+      </div>
+
+      <!-- TRANSFORMATION STEPS -->
+      <div data-reveal>
+        <div class="temp-curve__header">
+          <h2 class="temp-curve__title">The Four Critical Temperatures</h2>
+          <p class="temp-curve__desc">
+            Phase transformation in SMAs doesn't happen at a single point — it spans
+            a temperature range defined by four transition markers. These can be tuned
+            during alloy manufacturing to suit specific applications.
+          </p>
+        </div>
+
+        <div data-reveal>
+          <div class="transform-step">
+            <div class="transform-step__circle">Ms</div>
+            <p class="transform-step__name">Martensite Start</p>
+            <p class="transform-step__temp">~−20°C to 100°C</p>
+            <p class="transform-step__desc">Cooling begins triggering martensite formation</p>
+          </div>
+          <div class="transform-step">
+            <div class="transform-step__circle">Mf</div>
+            <p class="transform-step__name">Martensite Finish</p>
+            <p class="transform-step__temp">~−50°C to 80°C</p>
+            <p class="transform-step__desc">Full transformation to martensite complete</p>
+          </div>
+          <div class="transform-step">
+            <div class="transform-step__circle">As</div>
+            <p class="transform-step__name">Austenite Start</p>
+            <p class="transform-step__temp">~−10°C to 120°C</p>
+            <p class="transform-step__desc">Heating begins triggering austenite formation</p>
+          </div>
+          <div class="transform-step">
+            <div class="transform-step__circle">Af</div>
+            <p class="transform-step__name">Austenite Finish</p>
+            <p class="transform-step__temp">~10°C to 150°C</p>
+            <p class="transform-step__desc">Full recovery to memorised shape complete</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEMP DIAGRAM -->
+      <div data-reveal>
+        <svg viewBox="0 0 800 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Phase transformation temperature curve">
+
+          <!-- Grid lines -->
+          <line x1="80" y1="220" x2="760" y2="220" stroke="#393836" stroke-width="1"/>
+          <line x1="80" y1="40"  x2="80"  y2="220" stroke="#393836" stroke-width="1"/>
+
+          <!-- Axis labels -->
+          <text x="400" y="252" text-anchor="middle" fill="#5a5957" font-size="12" font-family="DM Sans">Temperature →</text>
+          <text x="18" y="135" text-anchor="middle" fill="#5a5957" font-size="12" font-family="DM Sans" transform="rotate(-90 18 135)">Martensite fraction →</text>
+
+          <!-- Cooling curve (top) — martensite forms -->
+          <path d="M 120 50 L 280 50 Q 320 50 340 100 Q 360 155 380 185 Q 400 215 440 218 L 720 218"
+                stroke="#4f98a3" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+          <!-- Heating curve (bottom) — austenite forms -->
+          <path d="M 120 218 L 380 218 Q 420 218 450 185 Q 480 150 500 100 Q 520 50 560 50 L 720 50"
+                stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+          <!-- Fill between curves (hysteresis) -->
+          <path d="M 120 50 L 280 50 Q 320 50 340 100 Q 360 155 380 185 Q 400 215 440 218
+                   L 380 218 Q 420 218 450 185 Q 480 150 500 100 Q 520 50 560 50
+                   L 280 50 Z"
+                fill="url(#hysteresisFill)" opacity="0.15"/>
+
+          <defs>
+            <linearGradient id="hysteresisFill" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#4f98a3"/>
+              <stop offset="100%" stop-color="#e8643a"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Temperature markers -->
+          <line x1="310" y1="45" x2="310" y2="225" stroke="#393836" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="410" y1="45" x2="410" y2="225" stroke="#393836" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="460" y1="45" x2="460" y2="225" stroke="#393836" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="540" y1="45" x2="540" y2="225" stroke="#393836" stroke-width="1" stroke-dasharray="4,3"/>
+
+          <!-- Marker labels -->
+          <text x="310" y="238" text-anchor="middle" fill="#4f98a3" font-size="11" font-family="DM Sans" font-weight="600">Ms</text>
+          <text x="410" y="238" text-anchor="middle" fill="#7dc5cc" font-size="11" font-family="DM Sans" font-weight="600">Mf</text>
+          <text x="460" y="238" text-anchor="middle" fill="#e07a50" font-size="11" font-family="DM Sans" font-weight="600">As</text>
+          <text x="540" y="238" text-anchor="middle" fill="#e8643a" font-size="11" font-family="DM Sans" font-weight="600">Af</text>
+
+          <!-- Curve labels -->
+          <text x="190" y="44" text-anchor="middle" fill="#4f98a3" font-size="11" font-family="DM Sans">Cooling →</text>
+          <text x="640" y="44" text-anchor="middle" fill="#e8643a" font-size="11" font-family="DM Sans">← Heating</text>
+
+          <!-- Hysteresis brace -->
+          <line x1="310" y1="130" x2="540" y2="130" stroke="#797876" stroke-width="1"/>
+          <text x="425" y="125" text-anchor="middle" fill="#797876" font-size="10" font-family="DM Sans">Hysteresis Window</text>
+
+        </svg>
+      </div>
+
+      <div data-reveal style="margin-top: var(--space-6);">
+        <span class="callout__icon">🔁</span>
+        <p class="callout__text">
+          <strong>Thermal Hysteresis:</strong> The heating and cooling curves don't overlap —
+          this gap is called hysteresis. Transformation starts at different temperatures
+          depending on direction (heating vs. cooling). For Nitinol, this window is typically
+          <strong>20–50°C wide</strong>, which engineers use to design predictable actuation behaviour.
+        </p>
+      </div>
+
+      <!-- SECTION DIVIDER -->
+      <div data-reveal>
+        <div class="section-divider__line"></div>
+        <span class="section-divider__label">Reference Temperatures — Nitinol</span>
+        <div class="section-divider__line"></div>
+      </div>
+
+      <!-- TEMPERATURES TABLE -->
+      <table data-reveal aria-label="Nitinol transformation temperatures">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Typical Range (Nitinol)</th>
+            <th>What Happens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ms</td>
+            <td><strong>Martensite Start</strong></td>
+            <td>−20°C to +100°C</td>
+            <td>Cooling initiates; first martensite domains nucleate</td>
+          </tr>
+          <tr>
+            <td>Mf</td>
+            <td><strong>Martensite Finish</strong></td>
+            <td>−50°C to +80°C</td>
+            <td>Fully martensitic — alloy is soft and deformable</td>
+          </tr>
+          <tr>
+            <td>As</td>
+            <td><strong>Austenite Start</strong></td>
+            <td>−10°C to +120°C</td>
+            <td>Heating begins reverse transformation; shape recovery starts</td>
+          </tr>
+          <tr>
+            <td>Af</td>
+            <td><strong>Austenite Finish</strong></td>
+            <td>+10°C to +150°C</td>
+            <td>Fully austenitic — memorised shape fully recovered</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div data-reveal style="margin-top: var(--space-6);">
+        <span class="callout__icon">🧪</span>
+        <p class="callout__text">
+          <strong>Tunable by Composition:</strong> These temperatures are not fixed — they shift
+          dramatically based on the Ni:Ti ratio and trace additions of Cu, Fe, or Co.
+          A <strong>1 at% change in nickel content</strong> can shift Af by up to 100°C,
+          giving engineers precise control over actuation temperature.
+        </p>
+      </div>
+
+      <!-- NEXT PAGE CTA -->
+      <a href="./applications.html" data-reveal aria-label="Next: Applications">
+        <div>
+          <p class="next-cta__label">Next Chapter</p>
+          <h2 class="next-cta__title">Applications</h2>
+          <p class="next-cta__desc">From cardiac stents to spacecraft — discover how SMAs are deployed in the real world across medicine, aerospace, robotics, and everyday devices.</p>
+        </div>
+        <span class="next-cta__arrow" aria-hidden="true">→</span>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+            <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+              <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                    stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+            </svg>
+            <span class="navbar__logo-text">SMA <span>Forge</span></span>
+          </a>
+          <p>An interactive educational platform exploring Shape Memory Alloys, Nitinol chemistry, and smart materials engineering.</p>
+        </div>
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <div class="footer__nav-group">
+            <h4>Learn</h4>
+            <ul role="list">
+              <li><a href="./concept.html">The Concept</a></li>
+              <li><a href="./phases.html">Phases</a></li>
+              <li><a href="./applications.html">Applications</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-group">
+            <h4>Explore</h4>
+            <ul role="list">
+              <li><a href="./history.html">History</a></li>
+              <li><a href="./sdgs.html">SDGs</a></li>
+              <li><a href="./about.html">About</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 SMA Forge. Built for educational purposes.</span>
+        <span>Shape Memory Alloys — Where Chemistry Meets Engineering.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/navbar.js"></script>
+</body>
+</html>

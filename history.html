@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The history of Shape Memory Alloys — from Arne Ölander's 1932 discovery to Nitinol and the modern SMA industry." />
+  <title>History — SMA Forge</title>
+
+  <script src="./js/theme.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+
+  <style>
+
+    /* ── Era label ── */
+    .era-label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      color: var(--text-faint);
+      width: fit-content;
+      margin-bottom: var(--space-8);
+    }
+
+    /* ── Timeline container ── */
+    .timeline {
+      position: relative;
+      padding-left: var(--space-10);
+    }
+
+    /* Vertical spine */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        var(--teal) 5%,
+        var(--teal) 40%,
+        var(--accent) 60%,
+        var(--accent) 95%,
+        transparent
+      );
+    }
+
+    /* ── Timeline entry ── */
+    .tl-entry {
+      position: relative;
+      margin-bottom: var(--space-10);
+      transition: opacity var(--transition);
+    }
+
+    .tl-entry:last-child { margin-bottom: 0; }
+
+    /* Dot on spine */
+    .tl-entry::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * var(--space-10) + 10px);
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--teal);
+      background: var(--bg);
+      z-index: 1;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .tl-entry:hover::before {
+      transform: scale(1.4);
+    }
+
+    /* Milestone entries get accent colour */
+    .tl-entry--milestone::before {
+      border-color: var(--accent);
+      background: rgba(232,100,58,0.15);
+      width: 16px;
+      height: 16px;
+      left: calc(-1 * var(--space-10) + 8px);
+    }
+
+    /* ── Entry inner card ── */
+    .tl-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6) var(--space-7);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .tl-entry:hover .tl-card {
+      border-color: var(--border-hover);
+      transform: translateX(4px);
+    }
+
+    .tl-entry--milestone .tl-card {
+      border-color: rgba(232,100,58,0.2);
+      background: linear-gradient(135deg, var(--surface), rgba(232,100,58,0.03));
+    }
+
+    /* Year badge */
+    .tl-year {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      margin-bottom: var(--space-1);
+    }
+
+    .tl-entry--milestone .tl-year { color: var(--accent); }
+    .tl-entry:not(.tl-entry--milestone) .tl-year { color: var(--teal); }
+
+    .tl-who {
+      font-size: var(--text-xs);
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      margin-bottom: var(--space-3);
+    }
+
+    .tl-title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-3);
+      color: var(--text);
+    }
+
+    .tl-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 70ch;
+    }
+
+    .tl-tag {
+      display: inline-flex;
+      align-items: center;
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      margin-top: var(--space-4);
+      width: fit-content;
+    }
+
+    .tl-tag--discovery  { background: rgba(79,152,163,0.1);  color: var(--teal);   border: 1px solid rgba(79,152,163,0.25); }
+    .tl-tag--milestone  { background: rgba(232,100,58,0.1); color: var(--accent); border: 1px solid rgba(232,100,58,0.25); }
+    .tl-tag--commercial { background: rgba(155,111,212,0.1); color: #9b6fd4;       border: 1px solid rgba(155,111,212,0.25); }
+    .tl-tag--modern     { background: rgba(58,184,122,0.1);  color: #3ab87a;       border: 1px solid rgba(58,184,122,0.25); }
+
+    /* ── Era section headers ── */
+    .era-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+      margin-top: var(--space-12);
+    }
+
+    .era-header:first-of-type { margin-top: 0; }
+
+    .era-header__line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .era-header__label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    /* ── Key figures grid ── */
+    .figures-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+      margin-block: var(--space-10);
+    }
+
+    .figure-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .figure-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .figure-card__initial {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      margin-bottom: var(--space-4);
+      letter-spacing: 0.04em;
+    }
+
+    .figure-card:nth-child(1) .figure-card__initial { background: rgba(79,152,163,0.15);  color: var(--teal);   }
+    .figure-card:nth-child(2) .figure-card__initial { background: rgba(232,100,58,0.15); color: var(--accent); }
+    .figure-card:nth-child(3) .figure-card__initial { background: rgba(155,111,212,0.15); color: #9b6fd4;       }
+    .figure-card:nth-child(4) .figure-card__initial { background: rgba(58,184,122,0.15);  color: #3ab87a;       }
+    .figure-card:nth-child(5) .figure-card__initial { background: rgba(212,164,58,0.15);  color: #d4a43a;       }
+    .figure-card:nth-child(6) .figure-card__initial { background: rgba(79,152,163,0.15);  color: var(--teal);   }
+
+    .figure-card__name {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: var(--space-1);
+    }
+
+    .figure-card__role {
+      font-size: var(--text-xs);
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      margin-bottom: var(--space-3);
+    }
+
+    .figure-card__contrib {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ── Stats row ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      margin-block: var(--space-10);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8);
+    }
+
+    .stat-cell {
+      text-align: center;
+      padding: var(--space-4);
+      border-right: 1px solid var(--border);
+    }
+
+    .stat-cell:last-child { border-right: none; }
+
+    .stat-cell__value {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .stat-cell__label {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      line-height: 1.5;
+    }
+
+    /* ── Callout ── */
+    .callout {
+      display: flex; gap: var(--space-4);
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6);
+      margin-top: var(--space-6);
+    }
+    .callout__icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+    .callout__text { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.7; }
+    .callout__text strong { color: var(--text); }
+
+    /* ── Section divider ── */
+    .section-divider {
+      display: flex; align-items: center; gap: var(--space-4);
+      margin-block: var(--space-12);
+    }
+    .section-divider__line { flex: 1; height: 1px; background: var(--border); }
+    .section-divider__label {
+      font-size: var(--text-xs); text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--text-faint); white-space: nowrap;
+    }
+
+    /* ── Next CTA ── */
+    .next-cta {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10) var(--space-12);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: var(--space-8);
+      margin-top: var(--space-16); text-decoration: none;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .next-cta:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .next-cta__label {
+      font-size: var(--text-xs); text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-faint); margin-bottom: var(--space-2);
+    }
+    .next-cta__title {
+      font-family: var(--font-display); font-size: var(--text-2xl);
+      font-weight: 400; letter-spacing: 0.03em; color: var(--text);
+    }
+    .next-cta__desc {
+      font-size: var(--text-sm); color: var(--text-muted);
+      margin-top: var(--space-2); max-width: 45ch;
+    }
+    .next-cta__arrow {
+      font-size: 2rem; color: var(--accent); flex-shrink: 0;
+      transition: transform var(--transition);
+    }
+    .next-cta:hover .next-cta__arrow { transform: translateX(6px); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .figures-grid { grid-template-columns: 1fr 1fr; }
+      .stats-row { grid-template-columns: 1fr; }
+      .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-cell:last-child { border-bottom: none; }
+      .next-cta { flex-direction: column; align-items: flex-start; padding: var(--space-8); }
+    }
+
+    @media (max-width: 480px) {
+      .figures-grid { grid-template-columns: 1fr; }
+      .timeline { padding-left: var(--space-8); }
+    }
+  </style>
+</head>
+
+<body class="page-enter">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar__inner">
+      <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+        <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+          <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+        </svg>
+        <span class="navbar__logo-text">SMA <span>Forge</span></span>
+      </a>
+      <ul class="navbar__links" role="list">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./concept.html">Concept</a></li>
+        <li><a href="./phases.html">Phases</a></li>
+        <li><a href="./applications.html">Applications</a></li>
+        <li><a href="./history.html" aria-current="page">History</a></li>
+        <li><a href="./sdgs.html">SDGs</a></li>
+        <li><a href="./quiz.html">Quiz</a></li>
+      </ul>
+      <div class="navbar__controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode"></button>
+        <button class="navbar__hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div class="navbar__mobile" id="mobile-menu">
+    <a href="./index.html">Home</a>
+    <a href="./concept.html">Concept</a>
+    <a href="./phases.html">Phases</a>
+    <a href="./applications.html">Applications</a>
+    <a href="./history.html">History</a>
+    <a href="./sdgs.html">SDGs</a>
+    <a href="./quiz.html">Quiz</a>
+  </div>
+
+  <main id="main">
+
+    <!-- PAGE HERO -->
+    <section class="page-hero" style="background: radial-gradient(ellipse 60% 40% at 30% 60%, rgba(79,152,163,0.06), transparent);">
+      <div class="container--narrow">
+        <p class="page-hero__label hero-animate-1">04 — History</p>
+        <h1 class="page-hero__title hero-animate-2">90 Years of<br/>Smart Metal.</h1>
+        <p class="page-hero__subtitle hero-animate-3">
+          Shape Memory Alloys were not invented — they were discovered, puzzled over,
+          and slowly understood across nine decades. From a Swedish lab in 1932 to a
+          $17 billion global industry, this is the story of one of materials science's
+          most surprising phenomena.
+        </p>
+      </div>
+    </section>
+
+    <div class="container--narrow">
+
+      <!-- STATS ROW -->
+      <div class="stats-row" data-reveal>
+        <div class="stat-cell">
+          <p class="stat-cell__value" style="color:var(--teal);">1932</p>
+          <p class="stat-cell__label">Year of first<br/>documented observation</p>
+        </div>
+        <div class="stat-cell">
+          <p class="stat-cell__value" style="color:var(--accent);">1962</p>
+          <p class="stat-cell__label">Year Nitinol was<br/>discovered at NRL</p>
+        </div>
+        <div class="stat-cell">
+          <p class="stat-cell__value" style="color:#3ab87a;">$17.65B</p>
+          <p class="stat-cell__label">Global market<br/>value in 2023</p>
+        </div>
+      </div>
+
+      <!-- ERA 1: EARLY DISCOVERIES -->
+      <div class="era-header" data-reveal>
+        <div class="era-header__line"></div>
+        <span class="era-header__label">Era I — Early Discoveries · 1932–1959</span>
+        <div class="era-header__line"></div>
+      </div>
+
+      <div class="timeline" data-reveal>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">1932</p>
+            <p class="tl-who">Arne Ölander · Uppsala University, Sweden</p>
+            <h3 class="tl-title">The First Observation</h3>
+            <p class="tl-desc">
+              Swedish physicist Arne Ölander was studying the electrochemical
+              properties of gold-cadmium (AuCd) alloys when he noticed something
+              strange — the alloy exhibited a "rubber-like" elastic behaviour after
+              certain thermal treatments. He called it "pseudoelasticity" and noted
+              it in passing, not realising the significance. This is the first
+              documented observation of superelasticity in a metallic alloy.
+            </p>
+            <span class="tl-tag tl-tag--discovery">Discovery</span>
+          </div>
+        </div>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">1938</p>
+            <p class="tl-who">Greninger &amp; Mooradian · Harvard University, USA</p>
+            <h3 class="tl-title">Martensite Transformation Observed</h3>
+            <p class="tl-desc">
+              Greninger and Mooradian documented the martensitic phase transformation
+              in brass (Cu-Zn) alloys — observing that a shear-type crystal
+              transformation occurred on cooling and reversed on heating. This was
+              the first systematic study of the crystallographic mechanism that
+              underlies shape memory, though its connection to the effect
+              was not yet established.
+            </p>
+            <span class="tl-tag tl-tag--discovery">Discovery</span>
+          </div>
+        </div>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">1951</p>
+            <p class="tl-who">Chang &amp; Read · Columbia University, USA</p>
+            <h3 class="tl-title">Shape Recovery First Demonstrated</h3>
+            <p class="tl-desc">
+              Chang and Read were the first to explicitly demonstrate and measure
+              shape recovery in an AuCd alloy — bending a specimen and watching it
+              return to its original shape upon heating. They measured the
+              transformation temperatures precisely and noted the reversible nature
+              of the effect. This is the first intentional demonstration of the
+              shape memory effect, though the term did not yet exist.
+            </p>
+            <span class="tl-tag tl-tag--discovery">Discovery</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ERA 2: NITINOL -->
+      <div class="era-header" data-reveal>
+        <div class="era-header__line"></div>
+        <span class="era-header__label">Era II — The Birth of Nitinol · 1960–1974</span>
+        <div class="era-header__line"></div>
+      </div>
+
+      <div class="timeline" data-reveal>
+
+        <div class="tl-entry tl-entry--milestone">
+          <div class="tl-card">
+            <p class="tl-year">1962</p>
+            <p class="tl-who">William J. Buehler &amp; Frederick Wang · US Naval Research Laboratory</p>
+            <h3 class="tl-title">Nitinol is Discovered</h3>
+            <p class="tl-desc">
+              Naval engineer William Buehler was testing nickel-titanium alloys for
+              missile nose cones — seeking a fatigue-resistant, heat-tolerant material.
+              During a meeting, a folded strip of NiTi alloy was passed around the
+              room. Someone bent it back and forth; someone else held it near a
+              flame — and it snapped back to its original shape. The room went
+              silent. Buehler and Frederick Wang investigated systematically and
+              confirmed the shape memory effect. They named it
+              <strong>Nitinol</strong> — Nickel Titanium Naval Ordnance Laboratory.
+            </p>
+            <span class="tl-tag tl-tag--milestone">Landmark</span>
+          </div>
+        </div>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">1965</p>
+            <p class="tl-who">Buehler, Wang &amp; colleagues · NRL</p>
+            <h3 class="tl-title">Superelasticity Characterised</h3>
+            <p class="tl-desc">
+              The NRL team published comprehensive mechanical testing of Nitinol,
+              documenting superelasticity — the ability to recover up to 8% strain
+              upon unloading, far exceeding any conventional metal. They mapped
+              transformation temperatures and established the Ni:Ti ratio as the
+              primary composition variable for tuning behaviour.
+            </p>
+            <span class="tl-tag tl-tag--discovery">Research</span>
+          </div>
+        </div>
+
+        <div class="tl-entry tl-entry--milestone">
+          <div class="tl-card">
+            <p class="tl-year">1969</p>
+            <p class="tl-who">Raychem Corporation · USA</p>
+            <h3 class="tl-title">First Commercial Application — Cryofit™</h3>
+            <p class="tl-desc">
+              Raychem Corporation developed the first commercial SMA product:
+              Cryofit™ pipe couplings for the US Navy's F-14 Tomcat hydraulic
+              systems. The couplings were chilled in liquid nitrogen to expand them,
+              slid over pipe ends, then warmed to ambient temperature — contracting
+              to form a leakproof joint stronger than welding. Over 100,000 were
+              installed without a single failure reported in service.
+            </p>
+            <span class="tl-tag tl-tag--milestone">First Commercial Use</span>
+          </div>
+        </div>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">1971</p>
+            <p class="tl-who">Wayman &amp; Shimizu · University of Illinois &amp; Tohoku University</p>
+            <h3 class="tl-title">Two-Way Memory Effect Explained</h3>
+            <p class="tl-desc">
+              Wayman and Shimizu provided the first rigorous crystallographic
+              explanation for the two-way shape memory effect — where an alloy
+              remembers two shapes (one for heating, one for cooling). They linked
+              the behaviour to thermally induced martensite and internal stress
+              fields left by training cycles, giving engineers a theoretical basis
+              for device design.
+            </p>
+            <span class="tl-tag tl-tag--discovery">Theory</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ERA 3: MEDICAL & COMMERCIALISATION -->
+      <div class="era-header" data-reveal>
+        <div class="era-header__line"></div>
+        <span class="era-header__label">Era III — Medical Revolution · 1975–1999</span>
+        <div class="era-header__line"></div>
+      </div>
+
+      <div class="timeline" data-reveal>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">1977</p>
+            <p class="tl-who">Johnson &amp; Martynova · various institutions</p>
+            <h3 class="tl-title">Orthodontic Archwires Introduced</h3>
+            <p class="tl-desc">
+              The first Nitinol orthodontic archwires were introduced commercially.
+              Their ability to exert constant, light force over large deformations —
+              unlike stainless steel wires that quickly lose tension — revolutionised
+              orthodontic treatment. Within a decade they became the industry standard
+              for initial alignment stages, reducing patient discomfort and
+              appointment frequency dramatically.
+            </p>
+            <span class="tl-tag tl-tag--commercial">Medical</span>
+          </div>
+        </div>
+
+        <div class="tl-entry tl-entry--milestone">
+          <div class="tl-card">
+            <p class="tl-year">1983</p>
+            <p class="tl-who">Dotter, Cragg, Castañeda-Zúñiga · USA</p>
+            <h3 class="tl-title">First SMA Vascular Stent Concept</h3>
+            <p class="tl-desc">
+              Interventional radiologist Charles Dotter first proposed using
+              a self-expanding Nitinol mesh to hold open blood vessels — the
+              concept of the modern stent. His team demonstrated the idea in
+              animal models: a collapsed NiTi tube delivered by catheter that
+              expanded at body temperature to scaffold the vessel. The era of
+              interventional cardiology was quietly beginning.
+            </p>
+            <span class="tl-tag tl-tag--milestone">Medical Landmark</span>
+          </div>
+        </div>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">1990</p>
+            <p class="tl-who">Various manufacturers · USA &amp; Europe</p>
+            <h3 class="tl-title">Nitinol Eyeglass Frames</h3>
+            <p class="tl-desc">
+              Superelastic Nitinol eyeglass frames reach the consumer market.
+              Able to be fully deformed and spring back perfectly, they became a
+              commercial proof-of-concept that SMA properties could survive
+              high-volume manufacturing and everyday use — building public
+              familiarity with "memory metal."
+            </p>
+            <span class="tl-tag tl-tag--commercial">Consumer</span>
+          </div>
+        </div>
+
+        <div class="tl-entry tl-entry--milestone">
+          <div class="tl-card">
+            <p class="tl-year">1994</p>
+            <p class="tl-who">FDA · USA</p>
+            <h3 class="tl-title">FDA Approval — Nitinol Stents</h3>
+            <p class="tl-desc">
+              The US Food and Drug Administration approved the first Nitinol
+              self-expanding stent for clinical use in peripheral vascular disease.
+              This regulatory milestone opened the floodgates: within five years,
+              Nitinol stents became the global standard for carotid artery,
+              iliac artery, and femoropopliteal interventions. The medical device
+              industry's largest SMA market was born.
+            </p>
+            <span class="tl-tag tl-tag--milestone">Regulatory Landmark</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ERA 4: MODERN -->
+      <div class="era-header" data-reveal>
+        <div class="era-header__line"></div>
+        <span class="era-header__label">Era IV — Modern Era · 2000–Present</span>
+        <div class="era-header__line"></div>
+      </div>
+
+      <div class="timeline" data-reveal>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">2003</p>
+            <p class="tl-who">Boeing / NASA DARPA</p>
+            <h3 class="tl-title">Morphing Aircraft Wing Research</h3>
+            <p class="tl-desc">
+              NASA and Boeing began joint research programs embedding SMA actuators
+              in wing structures to achieve in-flight shape change. The DARPA Smart
+              Wing program demonstrated that Nitinol tendons could alter wing
+              camber and twist without conventional hydraulic or mechanical actuators,
+              reducing weight and drag — a preview of morphing aircraft now being
+              commercialised on Boeing 737 engine chevrons.
+            </p>
+            <span class="tl-tag tl-tag--modern">Aerospace</span>
+          </div>
+        </div>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">2012</p>
+            <p class="tl-who">Trignano, Italy · Post-earthquake retrofit</p>
+            <h3 class="tl-title">SMA Seismic Retrofit — First in Europe</h3>
+            <p class="tl-desc">
+              Following the 2012 Emilia earthquake, the historic church of
+              San Giorgio in Trignano was retrofitted with SMA tendons — the first
+              large-scale architectural application of SMAs for seismic protection
+              in Europe. The system allowed the masonry to flex during aftershocks
+              while the SMA elements returned it to vertical alignment, preserving
+              the 18th-century structure without invasive steel reinforcement.
+            </p>
+            <span class="tl-tag tl-tag--modern">Civil Engineering</span>
+          </div>
+        </div>
+
+        <div class="tl-entry tl-entry--milestone">
+          <div class="tl-card">
+            <p class="tl-year">2022</p>
+            <p class="tl-who">Apple Inc. · iPhone 14 Pro</p>
+            <h3 class="tl-title">SMA Enters the Smartphone</h3>
+            <p class="tl-desc">
+              Apple replaced the voice coil motor in the iPhone 14 Pro's Optical
+              Image Stabilisation system with a four-wire SMA actuator array —
+              making the iPhone the first mass-market consumer product to use SMA
+              actuation at scale. With over 200 million iPhones sold per year,
+              this single design decision brought SMA technology to more people
+              than all previous applications combined.
+            </p>
+            <span class="tl-tag tl-tag--milestone">Consumer Landmark</span>
+          </div>
+        </div>
+
+        <div class="tl-entry">
+          <div class="tl-card">
+            <p class="tl-year">2024–</p>
+            <p class="tl-who">Global research groups &amp; industry</p>
+            <h3 class="tl-title">4D Printing &amp; Programmable Matter</h3>
+            <p class="tl-desc">
+              The frontier of SMA research now involves 4D printing — using additive
+              manufacturing to create objects with programmed shape changes built
+              into their geometry. Combined with machine learning optimisation of
+              alloy compositions and training protocols, researchers are designing
+              SMA systems that respond to multiple stimuli (heat, stress, magnetic
+              field) with precisely engineered deformation sequences.
+            </p>
+            <span class="tl-tag tl-tag--modern">Future</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SECTION DIVIDER -->
+      <div class="section-divider" data-reveal>
+        <div class="section-divider__line"></div>
+        <span class="section-divider__label">Key Figures</span>
+        <div class="section-divider__line"></div>
+      </div>
+
+      <!-- KEY FIGURES -->
+      <div class="figures-grid" data-reveal>
+        <div class="figure-card">
+          <div class="figure-card__initial">AÖ</div>
+          <h3 class="figure-card__name">Arne Ölander</h3>
+          <p class="figure-card__role">Uppsala University · 1932</p>
+          <p class="figure-card__contrib">First observer of pseudoelasticity in AuCd alloys — unknowingly discovered superelasticity while studying electrochemistry.</p>
+        </div>
+        <div class="figure-card">
+          <div class="figure-card__initial">WB</div>
+          <h3 class="figure-card__name">William J. Buehler</h3>
+          <p class="figure-card__role">US Naval Research Lab · 1962</p>
+          <p class="figure-card__contrib">Co-discoverer of Nitinol. Witnessed the first dramatic demonstration of shape memory in NiTi and led the foundational characterisation work.</p>
+        </div>
+        <div class="figure-card">
+          <div class="figure-card__initial">FW</div>
+          <h3 class="figure-card__name">Frederick Wang</h3>
+          <p class="figure-card__role">US Naval Research Lab · 1962</p>
+          <p class="figure-card__contrib">Co-discoverer of Nitinol. Conducted the systematic crystallographic and mechanical testing that confirmed and explained the shape memory effect.</p>
+        </div>
+        <div class="figure-card">
+          <div class="figure-card__initial">CR</div>
+          <h3 class="figure-card__name">Chang &amp; Read</h3>
+          <p class="figure-card__role">Columbia University · 1951</p>
+          <p class="figure-card__contrib">First intentional demonstration of the shape memory effect in AuCd — bent a specimen and measured its thermal recovery systematically.</p>
+        </div>
+        <div class="figure-card">
+          <div class="figure-card__initial">CD</div>
+          <h3 class="figure-card__name">Charles Dotter</h3>
+          <p class="figure-card__role">Interventional Radiology · 1983</p>
+          <p class="figure-card__contrib">Conceived and demonstrated the first self-expanding Nitinol vascular stent — the concept that led to over 1.5 million implants per year today.</p>
+        </div>
+        <div class="figure-card">
+          <div class="figure-card__initial">CW</div>
+          <h3 class="figure-card__name">Clarence Wayman</h3>
+          <p class="figure-card__role">University of Illinois · 1970s</p>
+          <p class="figure-card__contrib">Provided the definitive crystallographic theory of martensitic transformation in SMAs — the intellectual framework that enabled rational alloy design.</p>
+        </div>
+      </div>
+
+      <div class="callout" data-reveal>
+        <span class="callout__icon">💡</span>
+        <p class="callout__text">
+          <strong>The Accidental Discovery Pattern:</strong> Like many great materials discoveries,
+          Nitinol was found by people looking for something else entirely. Buehler was seeking
+          fatigue-resistant missile nose cone material. The shape memory effect revealed itself
+          at a lab meeting — not a planned experiment. This underscores why broad, exploratory
+          materials research funding remains essential: the next revolutionary material may
+          already be sitting on a bench, waiting for someone to notice.
+        </p>
+      </div>
+
+      <!-- NEXT PAGE CTA -->
+      <a href="./sdgs.html" class="next-cta" aria-label="Next: SDGs" data-reveal>
+        <div>
+          <p class="next-cta__label">Next Chapter</p>
+          <h2 class="next-cta__title">SDGs</h2>
+          <p class="next-cta__desc">How do Shape Memory Alloys contribute to the UN Sustainable Development Goals? Explore the links between smart materials and a sustainable future.</p>
+        </div>
+        <span class="next-cta__arrow" aria-hidden="true">→</span>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+            <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+              <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                    stroke="#e8643a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+            </svg>
+            <span class="navbar__logo-text">SMA <span>Forge</span></span>
+          </a>
+          <p>An interactive educational platform exploring Shape Memory Alloys, Nitinol chemistry, and smart materials engineering.</p>
+        </div>
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <div class="footer__nav-group">
+            <h4>Learn</h4>
+            <ul role="list">
+              <li><a href="./concept.html">The Concept</a></li>
+              <li><a href="./phases.html">Phases</a></li>
+              <li><a href="./applications.html">Applications</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-group">
+            <h4>Explore</h4>
+            <ul role="list">
+              <li><a href="./history.html">History</a></li>
+              <li><a href="./sdgs.html">SDGs</a></li>
+              <li><a href="./about.html">About</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 SMA Forge. Built for educational purposes.</span>
+        <span>Shape Memory Alloys — Where Chemistry Meets Engineering.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/navbar.js"></script>
+</body>
+</html>

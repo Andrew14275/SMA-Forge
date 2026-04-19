@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SMA Forge — An interactive educational platform exploring Shape Memory Alloys, Nitinol, and smart materials science." />
+  <title>SMA Forge — Where Chemistry Meets Engineering</title>
+
+  <!-- Prevent theme flash -->
+  <script src="./js/theme.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet" />
+  <!-- Styles -->
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+
+  <style>
+    /* ── Hero ── */
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 68px;
+    }
+
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(232,100,58,0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 20% 70%, rgba(79,152,163,0.06) 0%, transparent 60%);
+    }
+
+    .hero__grid-lines {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+
+    .hero__inner {
+      position: relative;
+      z-index: 1;
+      max-width: var(--content-wide);
+      margin-inline: auto;
+      padding-inline: var(--space-6);
+      padding-block: var(--space-20);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+      align-items: center;
+    }
+
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-1) var(--space-3);
+      background: var(--accent-glow);
+      border: 1px solid rgba(232,100,58,0.25);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-5);
+    }
+
+    .hero__badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: var(--text-hero);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-6);
+    }
+
+    .hero__title .line-2 {
+      display: block;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .hero__desc {
+      font-size: var(--text-lg);
+      color: var(--text-muted);
+      max-width: 52ch;
+      line-height: 1.7;
+      margin-bottom: var(--space-8);
+    }
+
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-bottom: var(--space-10);
+    }
+
+    .hero__stats {
+      display: flex;
+      gap: var(--space-8);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--border);
+    }
+
+    .hero__stat-value {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: var(--space-1);
+    }
+
+    .hero__stat-label {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Hero visual */
+    .hero__visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero__atom {
+      position: relative;
+      width: 340px;
+      height: 340px;
+    }
+
+    .atom__ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid;
+      animation: spin linear infinite;
+    }
+
+    .atom__ring--1 {
+      border-color: rgba(232,100,58,0.3);
+      animation-duration: 12s;
+    }
+
+    .atom__ring--2 {
+      inset: 30px;
+      border-color: rgba(79,152,163,0.3);
+      animation-duration: 18s;
+      animation-direction: reverse;
+    }
+
+    .atom__ring--3 {
+      inset: 70px;
+      border-color: rgba(232,100,58,0.2);
+      animation-duration: 8s;
+    }
+
+    .atom__core {
+      position: absolute;
+      inset: 110px;
+      background: radial-gradient(circle, rgba(232,100,58,0.2), rgba(79,152,163,0.15), transparent);
+      border-radius: 50%;
+      border: 1px solid rgba(232,100,58,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .atom__core-text {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .atom__dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      top: 50%;
+      left: 0;
+      margin-top: -5px;
+      transform-origin: 170px 5px;
+    }
+
+    .atom__dot--orange {
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    .atom__dot--teal {
+      background: var(--teal);
+      box-shadow: 0 0 12px var(--teal);
+      top: 0;
+      left: 50%;
+      margin-left: -5px;
+      margin-top: 0;
+      transform-origin: 5px 170px;
+    }
+
+    .atom__label {
+      position: absolute;
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    .atom__label--ni  { top: -28px; left: 50%; transform: translateX(-50%); color: var(--teal); }
+    .atom__label--ti  { bottom: -28px; left: 50%; transform: translateX(-50%); color: var(--accent); }
+
+    /* ── Nav cards (explore section) ── */
+    .nav-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+
+    .nav-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .nav-card--orange::before {
+      background: radial-gradient(ellipse at top left, rgba(232,100,58,0.08), transparent 60%);
+    }
+
+    .nav-card--teal::before {
+      background: radial-gradient(ellipse at top left, rgba(79,152,163,0.08), transparent 60%);
+    }
+
+    .nav-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .nav-card:hover::before { opacity: 1; }
+
+    .nav-card__icon {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .nav-card__title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .nav-card__desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .nav-card__arrow {
+      font-size: var(--text-sm);
+      color: var(--text-faint);
+      transition: color var(--transition), transform var(--transition);
+      align-self: flex-end;
+    }
+
+    .nav-card:hover .nav-card__arrow {
+      color: var(--accent);
+      transform: translate(3px, -3px);
+    }
+
+    /* ── Highlight strip ── */
+    .highlight-strip {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding-block: var(--space-12);
+    }
+
+    .highlight-strip__inner {
+      max-width: var(--content-wide);
+      margin-inline: auto;
+      padding-inline: var(--space-6);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+      text-align: center;
+    }
+
+    .highlight-item__value {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .highlight-item__label {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .hero__inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-block: var(--space-16);
+      }
+
+      .hero__desc { margin-inline: auto; }
+      .hero__actions { justify-content: center; }
+      .hero__stats { justify-content: center; }
+      .hero__visual { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-cards { grid-template-columns: 1fr 1fr; }
+      .highlight-strip__inner { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .nav-cards { grid-template-columns: 1fr; }
+      .highlight-strip__inner { grid-template-columns: 1fr 1fr; }
+      .hero__stats { gap: var(--space-6); flex-wrap: wrap; }
+    }
+  </style>
+</head>
+
+<body class="page-enter">
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ═══════════════════════════════ NAVBAR ═══════════════════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar__inner">
+
+      <!-- Logo -->
+      <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+        <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+          <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                stroke="#e8643a" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round" fill="none"/>
+          <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+        </svg>
+        <span class="navbar__logo-text">SMA <span>Forge</span></span>
+      </a>
+
+      <!-- Desktop links -->
+      <ul class="navbar__links" role="list">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./concept.html">Concept</a></li>
+        <li><a href="./phases.html">Phases</a></li>
+        <li><a href="./applications.html">Applications</a></li>
+        <li><a href="./history.html">History</a></li>
+        <li><a href="./sdgs.html">SDGs</a></li>
+        <li><a href="./about.html">about</a></li>
+      </ul>
+
+      <!-- Controls -->
+      <div class="navbar__controls">
+        <button class="theme-toggle" data-theme-toggle
+                aria-label="Switch to light mode">
+        </button>
+        <button class="navbar__hamburger" aria-label="Open menu"
+                aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile nav -->
+  <div class="navbar__mobile" id="mobile-menu" role="navigation"
+       aria-label="Mobile navigation">
+    <a href="./index.html">Home</a>
+    <a href="./concept.html">Concept</a>
+    <a href="./phases.html">Phases</a>
+    <a href="./applications.html">Applications</a>
+    <a href="./history.html">History</a>
+    <a href="./sdgs.html">SDGs</a>
+    <a href="./about.html">about</a>
+  </div>
+
+  <main id="main">
+
+    <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="hero__grid-lines" aria-hidden="true"></div>
+
+      <div class="hero__inner">
+        <!-- Left: Text -->
+        <div class="hero__content">
+          <div class="hero__badge hero-animate-1" aria-hidden="true">
+            <span class="hero__badge-dot"></span>
+            Smart Materials Science
+          </div>
+
+          <h1 class="hero__title hero-animate-2" id="hero-title">
+            Metals That
+            <span class="gradient-text">Remember.</span>
+            <span class="line-2">Science That</span>
+            <span class="gradient-text">Inspires.</span>
+          </h1>
+
+          <p class="hero__desc hero-animate-3">
+            Explore the fascinating world of Shape Memory Alloys —
+            materials that can recover their original form after deformation,
+            revolutionising medicine, engineering and beyond.
+          </p>
+
+          <div class="hero__actions hero-animate-4">
+            <a href="./concept.html" class="btn btn-primary">
+              Start Exploring
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a href="./about.html" class="btn btn-secondary">
+              Take the about
+            </a>
+          </div>
+
+          <div class="hero__stats hero-animate-5">
+            <div>
+              <div class="hero__stat-value text-accent">$17.65B</div>
+              <div class="hero__stat-label">Global Market 2023</div>
+            </div>
+            <div>
+              <div class="hero__stat-value text-teal">8–10%</div>
+              <div class="hero__stat-label">Recoverable Strain</div>
+            </div>
+            <div>
+              <div class="hero__stat-value" style="color:var(--text)">1962</div>
+              <div class="hero__stat-label">Nitinol Discovered</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Atom visual -->
+        <div class="hero__visual hero-animate-3" aria-hidden="true">
+          <div class="hero__atom">
+            <div class="atom__ring atom__ring--1"></div>
+            <div class="atom__ring atom__ring--2"></div>
+            <div class="atom__ring atom__ring--3"></div>
+            <div class="atom__core">
+              <span class="atom__core-text">NiTi</span>
+            </div>
+            <div class="atom__dot atom__dot--orange"
+                 style="animation: spin 12s linear infinite;
+                        transform-origin: 170px 5px;"></div>
+            <div class="atom__dot atom__dot--teal"
+                 style="animation: spin 18s linear infinite reverse;
+                        transform-origin: 5px 140px;"></div>
+            <span class="atom__label atom__label--ni">Nickel</span>
+            <span class="atom__label atom__label--ti">Titanium</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ HIGHLIGHT STRIP ═══════════════════════ -->
+    <div class="highlight-strip" aria-label="Key facts">
+      <div class="highlight-strip__inner">
+        <div data-reveal data-delay="1">
+          <div class="highlight-item__value text-accent">10×</div>
+          <div class="highlight-item__label">Greater strain than ordinary steel</div>
+        </div>
+        <div data-reveal data-delay="2">
+          <div class="highlight-item__value text-teal">1.5M</div>
+          <div class="highlight-item__label">Stent procedures per year</div>
+        </div>
+        <div data-reveal data-delay="3">
+          <div class="highlight-item__value" style="color:var(--text)">60+</div>
+          <div class="highlight-item__label">Years of SMA research</div>
+        </div>
+        <div data-reveal data-delay="4">
+          <div class="highlight-item__value" style="color:#c8a84b">SDG 9</div>
+          <div class="highlight-item__label">Industry, Innovation & Infrastructure</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════ EXPLORE SECTION ═══════════════════════ -->
+    <section class="section" aria-labelledby="explore-title">
+      <div class="container">
+        <p class="section-label" data-reveal>Explore the Site</p>
+        <h2 class="section-title" id="explore-title" data-reveal data-delay="1">
+          Everything You Need to Know
+        </h2>
+        <p class="section-subtitle" data-reveal data-delay="2">
+          From atomic phase changes to life-saving medical devices —
+          dive into each topic at your own pace.
+        </p>
+
+        <div class="nav-cards">
+          <a href="./concept.html" class="nav-card nav-card--orange"
+             data-reveal data-delay="1">
+            <div class="nav-card__icon">🧪</div>
+            <div class="nav-card__title">The Concept</div>
+            <div class="nav-card__desc">
+              What are Shape Memory Alloys and how do they work at the atomic level?
+            </div>
+            <div class="nav-card__arrow">↗</div>
+          </a>
+
+          <a href="./phases.html" class="nav-card nav-card--teal"
+             data-reveal data-delay="2">
+            <div class="nav-card__icon">🔄</div>
+            <div class="nav-card__title">Phases</div>
+            <div class="nav-card__desc">
+              Austenite vs Martensite — the two crystal structures that give SMAs their memory.
+            </div>
+            <div class="nav-card__arrow">↗</div>
+          </a>
+
+          <a href="./applications.html" class="nav-card nav-card--orange"
+             data-reveal data-delay="3">
+            <div class="nav-card__icon">🏥</div>
+            <div class="nav-card__title">Applications</div>
+            <div class="nav-card__desc">
+              From cardiac stents to aerospace actuators — where SMAs are changing the world.
+            </div>
+            <div class="nav-card__arrow">↗</div>
+          </a>
+
+          <a href="./history.html" class="nav-card nav-card--teal"
+             data-reveal data-delay="1">
+            <div class="nav-card__icon">📅</div>
+            <div class="nav-card__title">History</div>
+            <div class="nav-card__desc">
+              A 60-year journey from naval lab discovery to cutting-edge smart materials.
+            </div>
+            <div class="nav-card__arrow">↗</div>
+          </a>
+
+          <a href="./sdgs.html" class="nav-card nav-card--orange"
+             data-reveal data-delay="2">
+            <div class="nav-card__icon">🌍</div>
+            <div class="nav-card__title">SDGs</div>
+            <div class="nav-card__desc">
+              How SMAs contribute to the UN Sustainable Development Goals 3, 9, and 12.
+            </div>
+            <div class="nav-card__arrow">↗</div>
+          </a>
+
+          <a href="./about.html" class="nav-card nav-card--teal"
+             data-reveal data-delay="3">
+            <div class="nav-card__icon">🎯</div>
+            <div class="nav-card__title">about</div>
+            <div class="nav-card__desc">
+              Test your knowledge with 10 questions covering everything on this site.
+            </div>
+            <div class="nav-card__arrow">↗</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ WHAT IS AN SMA ═══════════════════════ -->
+    <section class="section" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);" aria-labelledby="what-title">
+      <div class="container--narrow">
+        <p class="section-label" data-reveal>Quick Introduction</p>
+        <h2 class="section-title" id="what-title" data-reveal data-delay="1">
+          What Is a Shape Memory Alloy?
+        </h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-10); align-items: start;"
+             data-reveal data-delay="2">
+          <div>
+            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: var(--space-4);">
+              Shape Memory Alloys (SMAs) are a unique class of smart metallic
+              materials that can <strong style="color: var(--text);">recover their original shape</strong>
+              after seemingly permanent deformation — simply by being heated
+              above a critical temperature.
+            </p>
+            <p style="color: var(--text-muted); line-height: 1.8;">
+              The most widely used SMA is <strong style="color: var(--accent);">Nitinol</strong>
+              (Nickel-Titanium), discovered at the Naval Ordnance Laboratory in 1962.
+              It can recover strains of up to <strong style="color: var(--teal);">8–10%</strong>
+              — compared to just 0.5% for ordinary steel.
+            </p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            <div class="card" style="padding: var(--space-5);">
+              <div style="font-size: var(--text-xs); text-transform: uppercase;
+                          letter-spacing: 0.1em; color: var(--accent);
+                          margin-bottom: var(--space-2);">Effect 1</div>
+              <div style="font-family: var(--font-display); font-size: var(--text-base);
+                          font-weight: 600; margin-bottom: var(--space-2);">
+                Shape Memory Effect
+              </div>
+              <div style="font-size: var(--text-sm); color: var(--text-muted);">
+                Deform at low temp → heat → returns to original shape.
+              </div>
+            </div>
+            <div class="card" style="padding: var(--space-5);">
+              <div style="font-size: var(--text-xs); text-transform: uppercase;
+                          letter-spacing: 0.1em; color: var(--teal);
+                          margin-bottom: var(--space-2);">Effect 2</div>
+              <div style="font-family: var(--font-display); font-size: var(--text-base);
+                          font-weight: 600; margin-bottom: var(--space-2);">
+                Superelasticity
+              </div>
+              <div style="font-size: var(--text-sm); color: var(--text-muted);">
+                At body temperature — deform and spring back without any heating needed.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--space-8);" data-reveal data-delay="3">
+          <a href="./concept.html" class="btn btn-primary">
+            Learn the Full Concept →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="./index.html" class="navbar__logo" aria-label="SMA Forge Home">
+            <svg class="navbar__logo-icon" viewBox="0 0 36 36" fill="none"
+                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="36" height="36" rx="8" fill="rgba(232,100,58,0.12)"/>
+              <path d="M8 24 C8 24, 12 12, 18 18 C24 24, 28 12, 28 12"
+                    stroke="#e8643a" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round" fill="none"/>
+              <circle cx="18" cy="18" r="3" fill="#4f98a3" opacity="0.8"/>
+            </svg>
+            <span class="navbar__logo-text">SMA <span>Forge</span></span>
+          </a>
+          <p>An interactive educational platform exploring Shape Memory Alloys, Nitinol chemistry, and smart materials engineering.</p>
+        </div>
+
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <div class="footer__nav-group">
+            <h4>Learn</h4>
+            <ul role="list">
+              <li><a href="./concept.html">The Concept</a></li>
+              <li><a href="./phases.html">Phases</a></li>
+              <li><a href="./applications.html">Applications</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-group">
+            <h4>Explore</h4>
+            <ul role="list">
+              <li><a href="./history.html">History</a></li>
+              <li><a href="./sdgs.html">SDGs</a></li>
+              <li><a href="./about.html">about</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <div class="footer__bottom">
+        <span>© 2026 SMA Forge. Built for educational purposes.</span>
+        <span>Shape Memory Alloys — Where Chemistry Meets Engineering.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="./js/navbar.js"></script>
+</body>
+</html>
